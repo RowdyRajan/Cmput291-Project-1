@@ -1,0 +1,21 @@
+-autogenerate ticket numbers
+-All information about vehicle types and ticket types exists in initial database
+
+-When checking inputs, ensure input is the right data type (don't worry about spaces or dashes etc.)
+-User input should be checked against existing data in the database
+-When a user enters invalid information, reprompt user for that same information
+-We don't need to display what data is valid for the user, only notify them if data is invalid
+-Specify date format when prompting for it
+-no dashes in SIN 123456789
+
+-When listing a violation record, list all attributes in the ticket field
+
+-Search engine - history is #times sold, average price, # of violations
+
+-If SIN entered is invalid, user should be prompted to add that person
+-If an auto transaction occurs and the owner isn't in the database, prompt to add that person
+-Auto transaction - confirm vehicle is registered / display error otherwise
+-primary and secondary owners can sell vehicles. When a vehicle is sold, all of the previous owner info should be removed.
+
+-If you don't use classes, specify major functions
+-Do not create tables, we will be testing against an existing database
