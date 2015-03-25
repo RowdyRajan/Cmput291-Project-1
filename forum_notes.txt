@@ -16,6 +16,7 @@
 -If an auto transaction occurs and the owner isn't in the database, prompt to add that person
 -Auto transaction - confirm vehicle is registered / display error otherwise
 -primary and secondary owners can sell vehicles. When a vehicle is sold, all of the previous owner info should be removed.
+-Issuing date and Expiry date should be prompted for
 
 -If you don't use classes, specify major functions
 -Do not create tables, we will be testing against an existing database
