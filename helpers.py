@@ -1,7 +1,7 @@
 import cx_Oracle
 import string
 
-def ReturnData(statement)
+def ReturnData(statement):
 		# helper function for getX
 		curs = connection.cursor()
 		curs.execute(statement)
