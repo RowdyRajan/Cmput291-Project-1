@@ -32,6 +32,30 @@ def search():
 				break
 		if (choice == 1):
 			while True:
-				li_num = input('Enter the number to be searched for')
+				li_num = int(input('Enter the number to be searched for'))
 				#test if valid number
-		
+				except ValueError:
+					println('Input must be an integer.')
+					continue
+				if (li_num < 0):
+					println("Input must be positive.")
+					continue
+				else:
+					break
+			statement = "SELECT p.name, l.licence_no, p.addr, p.birthday, 
+			l.class, c.c_id, c.description, l.expiring_date, p.sin
+			FROM people p, drive_licence l, driving_condition c, restriction r
+			WHERE (LEFT OUTER JOIN l ON p.sin = l.sin) AND (LEFT OUTER JOIN 
+			r ON l.licence_no = r.licence_no) AND (LEFT OUTER JOIN c ON 
+			r.r_id = c.c_id) AND l.licence_no = '%s'" %(li_num)
+			ReturnData(statement)
+		else:
+			driver_name = input("Enter driver name: ")
+			statement = "SELECT p.name, l.licence_no, p.addr, p.birthday, 
+			l.class, c.c_id, c.description, l.expiring_date, p.sin	FROM 
+			people p, drive_licence l, driving_condition c, restriction r WHERE 
+			(LEFT OUTER JOIN l ON p.sin = l.sin) AND (LEFT OUTER JOIN r ON 
+			l.licence_no = r.licence_no) AND (LEFT OUTER JOIN c ON r.r_id 
+			= c.c_id) AND UPPER(p.name) = UPPER('%s')" %(driver_name)
+			ReturnData(statement)
+
