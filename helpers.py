@@ -1,6 +1,7 @@
 import cx_Oracle
 import string
 
+connection = cx_Oracle.connect('rkjassal/rajaniscoo1@ gwynne.cs.ualberta.ca:1521/CRS');
 
 def ReturnData(statement):
 	# helper function for getX
@@ -93,4 +94,9 @@ def sinExists(SIN):
 def licenceExists(SIN):
 	# License for Inputted SIN exists?
 	statement = "select l.sin from drive_licence l where (l.sin) = ('%s')" % (SIN)
-	return(InDB(statement))
+	return(InDB(statement)
+
+
+def insertVehicle(serial_no, maker, model, year,color,type_id):
+	statement = "insert into vehicle values ('%s' , '%s' , '%s' , %d , '%s' ,%d)" % (serial_no, maker, model, year,color,type_id)
+	return ReturnData(statement)

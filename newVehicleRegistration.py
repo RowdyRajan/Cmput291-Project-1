@@ -3,7 +3,7 @@ from helpers import *
 def main():
 	while(True):
 		serial_no = input("Enter new vehicle ID: ")
-		serial_no = askLoop(serial_no, "Vehicle ID already exits. Please enter a new ID: ", VINisIn)
+		serial_no = digitAskLoop(serial_no, "Vehicle ID already exits. Please enter a new ID: ", VINisIn)
 	
 		maker = input("Enter vehicle maker: ")
 		maker = blackSpaceLoop(maker, "Invalid Maker. Please re-enter: ")
@@ -17,10 +17,13 @@ def main():
 		color = blackSpaceLoop(maker, "Invalid Color. Please re-enter: ")
 		type_id = input("Enter the vehicle type_id: ")
 		#TODO: Write typeIDExists 
-		#type_id = askLoop(type_id, "Invalid type_id. Please enter again: ", typeIDExits);
+		#type_id = askLoop(type_id, "Invalid type_id. Please enter again: ", typeIDExits)
+		
+		person = input("Enter the SIN of the new owner")
+		person = askLoop(person, 
 		
 	
-def askLoop(answer,askString, confirmFunction):
+def digitAskLoop(answer,askString, confirmFunction):
 	while(not answer.isdigit() or confirmFunction(answer)):
 		if not answer.isdigit():
 			answer = input("Not a valid number. Please re-enter:")
@@ -28,6 +31,9 @@ def askLoop(answer,askString, confirmFunction):
 			answer = input(askString);
 	return answer;
 
+def askLoop(answer,askString,confirmFunction):
+	while confirmFunction(answer) or answer.isspace():
+		answer = input(askString)
 
 def maxWidthDigitChecker(answer, askString, maxNumberSize):
 	while(not answer.isdigit()	or len(answer) != maxNumberSize):
