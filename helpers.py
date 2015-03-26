@@ -94,8 +94,7 @@ def sinExists(SIN):
 def licenceExists(SIN):
 	# License for Inputted SIN exists?
 	statement = "select l.sin from drive_licence l where (l.sin) = ('%s')" % (SIN)
-	return(InDB(statement)
-
+	return InDB(statement)
 
 def insertVehicle(serial_no, maker, model, year,color,type_id):
 	statement = "insert into vehicle values ('%s' , '%s' , '%s' , %d , '%s' ,%d)" % (serial_no, maker, model, year,color,type_id)

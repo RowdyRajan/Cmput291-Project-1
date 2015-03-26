@@ -20,7 +20,7 @@ def main():
 		#type_id = askLoop(type_id, "Invalid type_id. Please enter again: ", typeIDExits)
 		
 		person = input("Enter the SIN of the new owner")
-		person = askLoop(person, 
+		#person = askLoop(person, 
 		
 	
 def digitAskLoop(answer,askString, confirmFunction):
@@ -45,10 +45,10 @@ def digitChecker(answer, askString):
 		answer = input(askString)
 	return int(answer)
 
-def blankSpaceLoop(answer, askString){
+def blankSpaceLoop(answer, askString):
 	while answer.isspace():
 		answer = input(askString)
 	return answer
-} 
+
 if __name__ == "__main__":
 	main() 
