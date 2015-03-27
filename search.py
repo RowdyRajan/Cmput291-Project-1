@@ -33,14 +33,10 @@ def search():
 				break
 		if (choice == '1'):
 			while True:
-				try:
-					li_num = int(input('Enter the number to be searched for: '))
+				li_num = input('Enter the number to be searched for: ')
 				#test if valid number
-				except ValueError:
-					print('Input must be an integer.')
-					continue
-				if (li_num < 0):
-					print("Input must be positive.")
+				if(len(li_num)>15):
+					print('Licence numbers are 15 characters long')
 					continue
 				else:
 					break
@@ -72,14 +68,9 @@ def search():
 				break
 		if (choice == '1'):
 			while True:
-				try:
-					li_num = int(input('Enter the number to be searched for: '))
-				#test if valid number
-				except ValueError:
-					print('Input must be an integer.')
-					continue
-				if (li_num < 0):
-					print("Input must be positive.")
+				li_num = input('Enter the number to be searched for: ')
+				if(len(li_num)>15):
+					print('Licence numbers are 15 characters long')
 					continue
 				else:
 					break
@@ -109,7 +100,7 @@ def search():
 	elif(choice=='3'):
 		while True:
 			v_serial = input('Please enter the VIN to be searched for: ')
-			if (len(v_serial)!=4):#this should be 15, set to 4 for testing
+			if (len(v_serial)>15):
 				print('VIN must be 15 characters long. Try again.')
 				continue
 			else:
@@ -138,12 +129,12 @@ def printLicence(table):
 		expiry = e[6]
 
 		print("Name: %s" %name)
-		print("Licence Number: %s" %licence_no)
-		print("Address: %s" %addr)
-		print("Birthday: %s" %str(birthday.strftime('%Y-%m-%d')))
-		print("Driving Class: %s" %Class)
-		print("Driving Condition: %s" %condition)
-		print("Expiration Date: %s" %str(expiry.strftime('%Y-%m-%d')))
+		print("Licence Number: %s" % licence_no)
+		print("Address: %s" % addr)
+		print("Birthday: %s" % str(birthday.strftime('%Y-%m-%d')))
+		print("Driving Class: %s" % Class)
+		print("Driving Condition: %s" % condition)
+		print("Expiration Date: %s" % str(expiry.strftime('%Y-%m-%d')))
 
 	if (len(table) == 0):
 		print("Nothing found.")
@@ -155,10 +146,10 @@ def printViolation(table):
 		vType = e[2]
 		descriptions = e[3]
 
-		print("Ticket number: %d" %ticketNumber)
-		print("Violation date: %s" %str(vDate.strftime('%Y-%m-%d')))
-		print("Violation type: %s" %vType)
-		print("Descriptions: %s" %descriptions)
+		print("Ticket number: %d" % ticketNumber)
+		print("Violation date: %s" % str(vDate.strftime('%Y-%m-%d')))
+		print("Violation type: %s" % vType)
+		print("Descriptions: %s" % descriptions)
 
 	if (len(table) == 0):
 		print("Nothing found.")
@@ -169,9 +160,9 @@ def printVehicleHistory(table):
 		averagePrice = e[1]
 		numberTickets = e[2]
 
-		print("Total Sales: %d", totalSales)
-		print("Average Price: %d", averagePrice)
-		print("Number of Tickets: %d" % numberTickets)
+		print("Total Sales: %s" %totalSales)
+		print("Average Price: %s" % averagePrice)
+		print("Number of Tickets: %s" % numberTickets)
 
 	if len(table) == 0:
 		print("Nothing Found.")
