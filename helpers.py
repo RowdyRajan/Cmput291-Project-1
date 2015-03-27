@@ -120,9 +120,9 @@ def sinExists(SIN):
 	statement = "select p.sin from people p where (p.sin) = ('" + str(SIN) + "')"
 	return(InDB(statement))
 
-def licenceExists(SIN):
+def licenceExists(l_no):
 	# License for Inputted SIN exists?
-	statement = "select l. from drive_licence l where (l.sin) = ('%s')" % (SIN)
+	statement = "select l.licence_no from drive_licence l where (l.licence_no) = ('%s')" % (l_no)
 	return InDB(statement)
 
 def typeIDExists(type_id):
