@@ -46,7 +46,7 @@ def VR_Start():
 
 def nextID():
 	# Generates the next ticket ID by incrimenting the highest current ID by one
-	statement = "SELECT max(ticket_no) from ticket"
+	statement = "SELECT max(t.ticket_no) from ticket t"
 	rows = ReturnData(statement)
 	if (rows == None):
 		rows = 0
