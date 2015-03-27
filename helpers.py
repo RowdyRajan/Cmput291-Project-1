@@ -120,6 +120,12 @@ def sinExists(SIN):
 	statement = "select p.sin from people p where (p.sin) = ('" + str(SIN) + "')"
 	return(InDB(statement))
 
+def OwnerExists(SIN,VID):
+	# Returns if SIN exists
+	statement = "select o.owner_id from owner o where (o.owner_id) = ('%s') AND (o.vehicle_id) = ('%s')" % (SIN, VID)
+	return(InDB(statement))
+
+
 def licenceExists(l_no):
 	# License for Inputted SIN exists?
 	statement = "select l.licence_no from drive_licence l where (l.licence_no) = ('%s')" % (l_no)
@@ -138,6 +144,9 @@ def insertPerson(SIN, name, height, weight, eyecolor , haircolor,addr, gender, b
 	statement = "insert into people values ('%s' , '%s' , %s , %s , '%s' ,'%s', '%s', '%s', to_date('%s', 'yyyy/mm/dd'))" % (SIN,name,height,weight,eyecolor,haircolor,addr, gender,birthday)
 	return InsertData(statement)
 
+def insertOwner(owner_id, vehicle_id, is_primary_owner):
+	statement = "insert into owner values ('%s' , '%s' , '%s')" % (owner_id,vehicle_id, is_primary_owner)
+
 def insertTicket(ticket_no, violator_no, vehicle_no, office_no, vtype, vdate, place, description):
 	statement = "insert into ticket values ('%s' , '%s' , '%s' , '%s' , '%s' , to_date('%s', 'yyyy/mm/dd'), '%s', '%s' )" % (ticket_no, violator_no, vehicle_no, office_no, vtype, vdate, place, description)
 	return InsertData(statement)
@@ -150,9 +159,9 @@ def dateChecker(answer):
     matches = re.findall(r'(^\s*\d{4}/\d{2}/\d{2}){1}\s*$',answer)
     while len(matches) == 0 or not validDate(answer.strip()):
         if len(matches) == 0:
-            answer = input("Invalid format. Input in the format yyyy/mm/dd")
+            answer = input("Invalid format. Input in the format yyyy/mm/dd: ")
         else:
-            answer = input("Invalid date. Please enter an actual date")
+            answer = input("Invalid date. Please enter an actual date: ")
         matches = re.findall(r'(^\s*\d{4}/\d{2}/\d{2}){1}\s*$',answer)
     return answer.strip()
 
@@ -164,5 +173,3 @@ def validDate(date):
         return False
 
     return True
-
-
