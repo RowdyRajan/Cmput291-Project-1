@@ -3,6 +3,7 @@ import getpass
 import string
 
 
+
 def connect():
 	user = input("Username [%s]: " % getpass.getuser())
 	if not user:
@@ -39,6 +40,15 @@ def InDB(statement):
 		return True
 	cursor.close()
 	return False
+
+
+def InsertData(statement):
+	# helper function to insert a file
+	global connection
+	curs = connection.cursor()
+	curs.execute(statement)
+	curs.close()
+	return
 
 def getName(SIN):
 	# Returns SIN's name
@@ -112,4 +122,15 @@ def sinExists(SIN):
 def licenceExists(SIN):
 	# License for Inputted SIN exists?
 	statement = "select l.sin from drive_licence l where (l.sin) = ('%s')" % (SIN)
-	return(InDB(statement))
+	return InDB(statement)
+
+def typeIDExists(type_id):
+	#Checks to see if a vehicle type id exits 
+	statement = "select vt.type_id from vehicle_type vt where (vt.type_id) = %s" % (type_id)
+	return InDB(statement)
+
+def insertVehicle(serial_no, maker, model, year,color,type_id):
+	statement = "insert into vehicle values ('%s' , '%s' , '%s' , %s , '%s' ,%s)" % (serial_no, maker, model, year,color,type_id)
+	return InsertData(statement)
+
+
