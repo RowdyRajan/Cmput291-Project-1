@@ -27,6 +27,7 @@ def deleteOwner(VIN):
 	cursor.execute(query)
 	cursor.close()
 
+
 def ReturnData(statement):
 	# helper function for getX
 	global connection
@@ -55,6 +56,7 @@ def InsertData(statement):
 	cursor = connection.cursor()
 	cursor.execute(statement)
 	cursor.close()
+	#connection.commit()
 	return
 
 def getName(SIN):
