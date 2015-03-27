@@ -22,7 +22,7 @@ CREATE TABLE drive_licence (
 
 from helpers import *
 
-def License():
+def start_license():
 	print("Welcome to the driver's licence licensing agency. Here you can add a new drivers licence to the system")
 	while(1):
 		print("1: Enter New Licence")
