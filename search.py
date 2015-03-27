@@ -9,37 +9,38 @@
 #based on VIN
 from helpers import ReturnData
 def search():
-	println('1. Licence information')
-	println('2. Violation records')
-	println('3. Vehicle history')
-	println('4. Go back to main menu')
-	choice = input('Enter your choice (1-4): ')
+	print('1. Licence information')
+	print('2. Violation records')
+	print('3. Vehicle history')
+	print('4. Go back to main menu')
 	while True:
-		if input not in {'1', '2', '3', '4'}:
-			println('Invalid option. Try again.')
+		choice = input('Enter your choice (1-4): ')
+		if choice not in {'1', '2', '3', '4'}:
+			print('Invalid option. Try again.')
 			continue
 		else:
 			break
-
-	if (input==1):
-		println('Press 1 to search by Licence number')
-		println('Press 2 to search by name')
+	print("The value of choice is %s" %choice)
+	if (choice==1):
+		print('Press 1 to search by Licence number')
+		print('Press 2 to search by name')
 		while True:
 			choice = input('Enter your choice (1-4): ')
 			if( choice not in {'1', '2'}):
-				println('Invalid option. Start over.')
+				print('Invalid option. Start over.')
 				continue
 			else:
 				break
 		if (choice == 1):
 			while True:
-				li_num = int(input('Enter the number to be searched for'))
+				try:
+					li_num = int(input('Enter the number to be searched for'))
 				#test if valid number
 				except ValueError:
-					println('Input must be an integer.')
+					print('Input must be an integer.')
 					continue
 				if (li_num < 0):
-					println("Input must be positive.")
+					print("Input must be positive.")
 					continue
 				else:
 					break
@@ -59,44 +60,46 @@ def search():
 			l.licence_no = r.licence_no) AND (LEFT OUTER JOIN c ON r.r_id 
 			= c.c_id) AND UPPER(p.name) = UPPER('%s')""" %(driver_name)
 			ReturnData(statement)
-	else if(input==2):
-		println('Press 1 to search by Licence number')
-		println('Press 2 to search by SIN')
+	elif(choice==2):
+		print('Press 1 to search by Licence number')
+		print('Press 2 to search by SIN')
 		while True:
 			choice = input('Enter your choice (1-4): ')
 			if( choice not in {'1', '2'}):
-				println('Invalid option. Start over.')
+				print('Invalid option. Start over.')
 				continue
 			else:
 				break
 		if (choice == 1):
 			while True:
-				li_num = int(input('Enter the number to be searched for'))
+				try:
+					li_num = int(input('Enter the number to be searched for'))
 				#test if valid number
 				except ValueError:
-					println('Input must be an integer.')
+					print('Input must be an integer.')
 					continue
 				if (li_num < 0):
-					println("Input must be positive.")
+					print("Input must be positive.")
 					continue
 				else:
 					break
-				statement = """SELECT t.ticket_no, t.violator_no, t.vehicle_id, 
+			statement = """SELECT t.ticket_no, t.violator_no, t.vehicle_id, 
 				 t.office_no, t.vtype, t.vdate, t.place, t.descriptions, type.fine
 				 FROM ticket t, ticket_type type, drive_licence drive
 				 left outer join ticket_type type on type.vtype = t.vtype AND 
 				 left outer drive_licence drive on drive.sin = t.violator_no 
 				 AND drive.licence_no = '%s'""" %(li_num)
-				 ReturnData(statement)
+			ReturnData(statement)
 		else:
 			while True:
-				SIN = int(input('Enter the SIN to be searched for'))
+				try: 
+					SIN = int(input('Enter the SIN to be searched for'))
 				#test if valid number
 				except ValueError:
-					println('Input must be an integer.')
+					print('Input must be an integer.')
 					continue
 				if (SIN < 0):
-					println("Input must be positive.")
+					print("Input must be positive.")
 					continue
 				else:
 					break
@@ -106,11 +109,11 @@ def search():
 				 left outer join ticket_type type on type.vtype = t.vtype 
 				AND t.violator_no = '%s'""" %(SIN)
 				ReturnData(statement)
-	else if(input==3):
+	elif(choice==3):
 		while True:
 			v_serial = input('Please enter the VIN to be searched for: ')
 			if (len(v_serial)!=15):
-				println('VIN must be 15 characters long. Try again.')
+				print('VIN must be 15 characters long. Try again.')
 				continue
 			else:
 				break
@@ -121,5 +124,8 @@ def search():
 		  UPPER(v.serial_no) = UPPER('%s')
 		  GROUP BY v.serial_no""" %(v_serial)
 		ReturnData(statement)
+	elif(choice==4):
+		return 0
 	else:
+		print("Something went horridly wrong!")
 		return 0
