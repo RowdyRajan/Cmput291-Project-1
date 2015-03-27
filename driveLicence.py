@@ -50,80 +50,93 @@ def getInfo():
 
 	while True:
 		if(licNo == None):
-			licNo = input("Enter licence number: ")
-			if( sinExists(licNo) == False):
-				print("No record of licNo in Database.")
+			licNo = input("Licence number: ")
+			if(len(licNo)>15):
+				print("Licence number too long")
+				if(tryAgain()):
+					licNo = None
+					continue
+				else:
+					return None
+			if( licenceExists(licNo) ):
+				print("Duplicate licence number in database.")
 				if(tryAgain()):
 					licNo = None
 					continue
 				else:
 					return None
 			
-		if(violator == None):
-			violator = input("SIN of violating person: ")
-			if( sinExists(violator) == False):
+		if(SIN == None):
+			SIN = input("SIN: ")
+			if( sinExists(SIN) == False):
 				print("No record of person in Database, please try again.")
 				if(tryAgain()):
-					violator = None
+					SIN = None
 					continue
 				else:
 					return None
 			
 
-		if(vehicle == None):
-			vehicle = input("Serial Number vehicle: ")
-			if( VINExists(vehicle) == False ):
-				print("No record of vehicle in Database, please try again.")
+		if(licClass == None):
+			licClass = input("Licence Class: ")
+			if(len(licNo)>10):
+				print("Class entry too long")
 				if(tryAgain()):
-					vehicle = None
+					licClass = None
 					continue
 				else:
 					return None
 			
-		if(vtype == None):
-			vtype = input("Type of violation: ")
-			statement = "SELECT v.vtype FROM ticket_type v WHERE (v.vtype) = ('%s')" % (vtype)
+			
+		if(photo == None):
+			photoPath = input("Local image file including path and extention: ")
+			#Load image into memory from local file 
+			#(Assumes a file by this name exists in the directory you are running from)
+			f_image  = open(photoPath,'rb')
+			image  = f_image.read()
+
+			cursor.setinputsizes(image=cx_Oracle.LONG_BINARY)
+
+			insert = "insert into pictures (photo_id, title, place, image) values (:photo_id, :title, :place, :image)"
+
+			cursor.execute(insert,{'photo_id':pid, 'title':title,'place':place, 'image':image})
+
+
+
+			statement = "SELECT v.photo FROM ticket_type v WHERE (v.photo) = ('%s')" % (photo)
 			if( InDB(statement) == False ):
 				print("Invalid violation type, please re-enter.")
 				if(tryAgain()):
-					vtype = None
+					photo = None
 					continue
 				else:
 					return None
 								
-		if(vdate == None):
-			vdate = input("Date of violation (eg. yyyy/mm/dd): ").strip()
-			vdate = dateChecker(vdate)
+		if(issuingDate == None):
+			issuingDate = input("Issuing Date (eg. yyyy/mm/dd): ").strip()
+			issuingDate = dateChecker(issuingDate)
 
-		if(place == None):
-			place = input("Location (20 characters): ").strip()
-			if( len(place) > 20 ):
-				print("Entry too long, please re-enter.")
-				if(tryAgain()):
-					place = None
-					continue
-				else:
-					return None
+		if(expireDate == None):
+			expireDate = input("Expiry Date (eg. yyyy/mm/dd): ").strip()
+			expireDate = dateChecker(expireDate)
 
-		if(description == ""): # Optional
-			description = input("Further comments or descriptions (max 1000 characters): ")
+		insertLicence(licNo, SIN, licClass, photo, issuingDate, expireDate)
 
-			if( len(description) > 1024 ):
-				print("Entry too long.")
-				if(tryAgain()):
-					description = ""
-					continue
-				else:
-					return None
+		print("Would you like to enter a restriction?:")
 
-		ticket = insertTicket(nextID(), violator, vehicle, officer, vtype, vdate, place, description)
-		return ticket
 
-	# get licence_no (unique)
-		# check if already in database
+		return
 
-	# get sin
-		# must already exist
+
+def tryAgain():
+	# Possible helper function to repeat input attempt			
+	print("Try again? (Y/N):\n\r")
+	while(1):
+		ans = input().strip().lower()
+		if ans in ("yes", "y"):
+			return True
+		if ans in ("no", "n"):
+			return False
 
 
 

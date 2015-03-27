@@ -21,6 +21,12 @@ def searchDB(query):
 	cursor.close()
 	return table
 
+def deleteOwner(VIN):
+	query = "DELETE FROM owner WHERE vehicle_id = '%s'"%VIN
+	cursor = connection.cursor()
+	cursor.execute(query)
+	cursor.close()
+
 def ReturnData(statement):
 	# helper function for getX
 	global connection
@@ -44,7 +50,7 @@ def InDB(statement):
 
 
 def InsertData(statement):
-	# helper function to insert a file
+	# helper function to insert a row
 	global connection
 	cursor = connection.cursor()
 	cursor.execute(statement)
@@ -142,19 +148,22 @@ def tranIDExists(tran_id):
 	return InDB(statement)
 
 def insertVehicle(serial_no, maker, model, year,color,type_id):
-	statement = "insert into vehicle values ('%s' , '%s' , '%s' , %s , '%s' ,%s)" % (serial_no, maker, model, year,color,type_id)
+	statement = "INSERT into vehicle values ('%s' , '%s' , '%s' , %s , '%s' ,%s)" % (serial_no, maker, model, year,color,type_id)
 	return InsertData(statement)
 
-def insertPerson(SIN, name, height, weight, eyecolor , haircolor,addr, gender, birthday):
-	statement = "insert into people values ('%s' , '%s' , %s , %s , '%s' ,'%s', '%s', '%s', to_date('%s', 'yyyy/mm/dd'))" % (SIN,name,height,weight,eyecolor,haircolor,addr, gender,birthday)
+def insertPerson(SIN, name, height, weight, eyecolor , haircolor, addr, gender, birthday):
+	statement = "INSERT into people values ('%s' , '%s' , %s , %s , '%s' ,'%s', '%s', '%s', to_date('%s', 'yyyy/mm/dd'))" % (SIN,name,height,weight,eyecolor,haircolor,addr, gender,birthday)
 	return InsertData(statement)
 
 def insertOwner(owner_id, vehicle_id, is_primary_owner):
 	statement = "insert into owner values ('%s' , '%s' , '%s')" % (owner_id,vehicle_id, is_primary_owner)
 
 def insertTicket(ticket_no, violator_no, vehicle_no, office_no, vtype, vdate, place, description):
-	statement = "insert into ticket values ('%s' , '%s' , '%s' , '%s' , '%s' , to_date('%s', 'yyyy/mm/dd'), '%s', '%s' )" % (ticket_no, violator_no, vehicle_no, office_no, vtype, vdate, place, description)
+	statement = "INSERT into ticket values (%d , '%s' , '%s' , '%s' , '%s' , to_date('%s', 'yyyy/mm/dd'), '%s', '%s' )" % (ticket_no, violator_no, vehicle_no, office_no, vtype, vdate, place, description)
 	return InsertData(statement)
+
+def insertLicence(licNo, SIN, licClass, photo, issuingDate, expireDate):
+	statement = "INSERT into ticket values ('%s', '%s' , '%s' , to_date('%s', 'yyyy/mm/dd'), to_date('%s', 'yyyy/mm/dd'))" %
 
 def dateChecker(answer):
     #checks if answer is a valid date
