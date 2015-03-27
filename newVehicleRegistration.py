@@ -21,9 +21,13 @@ def registerVehicle():
 		type_id = input("Enter the vehicle type_id: ");
 		type_id = digitNotInAskLoop(type_id, "Type_id does not exist. Please enter again: ",typeIDExists );
 	
-		#insertVehicle(serial_no, maker, model, year, color, type_id);	
+		insertVehicle(serial_no, maker, model, year, color, type_id)	
 		
-		makePerson(1)	
+		makePerson(1,serial_no)	
+		if yesOrNoChecker("Would you like to enter a secondary owner? [Enter y/n]"):
+			makePerson(2,serial_no)
+		
+		return	
 
 def digitAskLoop(answer,askString, confirmFunction):
 	"""
@@ -36,7 +40,7 @@ def digitAskLoop(answer,askString, confirmFunction):
 	"""
 	while(not answer.isdigit() or confirmFunction(answer)):
 		if not answer.isdigit():
-			answer = input("Not a valid number. Please re-enter:")
+			answer = input("Not a valid number. Please re-enter: ")
 		else:
 			answer = input(askString);
 	return answer;
@@ -52,7 +56,7 @@ def digitNotInAskLoop(answer,askString, confirmFunction):
 	"""
 	while(not answer.isdigit() or not confirmFunction(answer)):
 		if not answer.isdigit():
-			answer = input("Not a valid number. Please re-enter:")
+			answer = input("Not a valid number. Please re-enter: ")
 		else:
 			answer = input(askString);
 	return answer;
@@ -95,7 +99,7 @@ def floatChecker(answer, askString):
 	#askString until it is confirmed a digit
 	#returns a answer is a digit
 	while(not answer.isdigit()):
-		parts = answer.spilt('.')
+		parts = answer.split('.')
 		if len(parts) == 2 and parts[0].isdigit() and parts[1].isdigit():
 			return answer
 		answer = input(askString)
@@ -120,7 +124,7 @@ def yesOrNoChecker(askString):
 	return False 
 
 
-def makePerson(OwnerType):
+def makePerson(OwnerType, VID):
 	"""
 	Makes a person and adds them to the data base
 	Ownertype is the type of owner they are:
@@ -132,9 +136,12 @@ def makePerson(OwnerType):
 
 	while True:
 		SIN = input("Enter the SIN of the new " + ownerTypeMap[OwnerType][0] + ' ');
-		SIN = digitChecker(SIN, "Not a valid SIN. Please enter again");
-			
-		if not sinExists(SIN):
+		SIN = digitChecker(SIN, "Not a valid SIN. Please enter again: ");
+		
+		if OwnerExists(SIN,VID):
+			print("Invalid Sin. Owner Exists")
+			continue
+		if not sinExists(SIN) or OwnerExists(SIN,VID) :
 			if not yesOrNoChecker("SIN does not exist. Would you like to make this SIN a person?[y or n]: "):	 
 				continue
 			
@@ -149,6 +156,9 @@ def makePerson(OwnerType):
 			weight = floatChecker(weight ,"Invalid number. Please enter again: ")
 			eyecolor  = input("Enter the person's eyecolor: ")
 			eyecolor = blankSpaceLoop(eyecolor ,"Blank entree. Please enter something: ")
+			haircolor  = input("Enter the person's haircolor: ")
+			haircolor = blankSpaceLoop(haircolor ,"Blank entree. Please enter something: ")
+
 
 			addr  = input("Enter the person's address: ")
 			addr = blankSpaceLoop(addr ,"Blank entree. Please enter something: ")
@@ -159,7 +169,9 @@ def makePerson(OwnerType):
 				gender = input("Please enter m or f: ")	
 			
 			birthday = input("Enter date of birth: ")	
-			brithday = dateChecker(birthday)
+			birthday = dateChecker(birthday)
 			
-			insertPerson(SIN,name,height,weight,eyecolor,addr,gender,birthday)
-		
+			insertPerson(SIN,name,height,weight,eyecolor,haircolor,addr,gender,birthday)
+		insertOwner(SIN, VID,ownerTypeMap[OwnerType][1])
+		break
+	return

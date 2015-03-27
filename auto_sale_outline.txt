@@ -1,0 +1,15 @@
+auto transaction:
+
+get max(transaction_id) and add 1
+Prompt for seller_id
+	if not in database, prompt to add person
+prompt for buyer_id
+	if not in database, prompt to add person
+prompt for vehicle_id
+	if not in database, prompt to add vehicle
+prompt for date of sale, handle with date method
+prompt for price, ensure is no more 999999999 (numeric(9,2))
+
+In table owner, we need to delete existing row wtih given vehicle ID
+add a new row with appropriate owner_id, vehicle_id, and is_primary_owner
+Insert transaction_id, seller_id, buyer_id, vehicle_id, s_date, and price
