@@ -1,23 +1,34 @@
 import cx_Oracle
+import getpass
 import string
+def connect():
+	user = input("Username [%s]: " % getpass.getuser())
+	if not user:
+		user = getpass.getuser()
+	pw = getpass.getpass()
+	conString=''+user+'/' + pw +'@gwynne.cs.ualberta.ca:1521/CRS'
+	global connection
+	connection = cx_Oracle.connect(conString)
 
-def ReturnData(statement)
+def ReturnData(statement):
 	# helper function for getX
-	curs = connection.cursor()
-	curs.execute(statement)
+	global connection
+	cursor = connection.cursor()
+	cursor.execute(statement)
 	rows = curs.fetchall()
-	curs.close()
+	cursor.close()
 	return rows[0][0]
 
 def InDB(statement):
 	# helper function to see if something exists in 
-	curs = connection.cursor()
-	curs.execute(statement)
+	global connection
+	cursor = connection.cursor()
+	cursor.execute(statement)
 	rows = curs.fetchall()
 	if len(rows) > 0:
 		curs.close()
 		return True
-	curs.close()
+	cursor.close()
 	return False
 
 def getName(SIN):
