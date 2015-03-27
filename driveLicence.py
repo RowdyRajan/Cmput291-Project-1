@@ -89,28 +89,22 @@ def getInfo():
 			
 			
 		if(photo == None):
+			global connection
 			photoPath = input("Local image file including path and extention: ")
 			#Load image into memory from local file 
 			#(Assumes a file by this name exists in the directory you are running from)
 			f_image  = open(photoPath,'rb')
+			title = "Smile!"
+			place = "Wherever"
+			pid = licNo
 			image  = f_image.read()
-
+			cursor = connection.cursor()
 			cursor.setinputsizes(image=cx_Oracle.LONG_BINARY)
-
 			insert = "insert into pictures (photo_id, title, place, image) values (:photo_id, :title, :place, :image)"
-
 			cursor.execute(insert,{'photo_id':pid, 'title':title,'place':place, 'image':image})
-
-
-
-			statement = "SELECT v.photo FROM ticket_type v WHERE (v.photo) = ('%s')" % (photo)
-			if( InDB(statement) == False ):
-				print("Invalid violation type, please re-enter.")
-				if(tryAgain()):
-					photo = None
-					continue
-				else:
-					return None
+			connection.commit()
+			f_image.close()
+			cursor.close()
 								
 		if(issuingDate == None):
 			issuingDate = input("Issuing Date (eg. yyyy/mm/dd): ").strip()
