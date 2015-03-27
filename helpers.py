@@ -52,6 +52,7 @@ def InsertData(statement):
 	cursor = connection.cursor()
 	cursor.execute(statement)
 	cursor.close()
+	#connection.commit()
 	return
 
 def getName(SIN):
