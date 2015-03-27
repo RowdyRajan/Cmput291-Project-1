@@ -40,20 +40,24 @@ def search():
 					continue
 				else:
 					break
-			statement = """select p.name, l.licence_no, p.addr, p.birthday, 
-			l.class, dc.description, l.expiring_date from people p, 
-			drive_licence l, driving_condition dc, restriction r where 
-			p.sin = l.sin and dc.c_id = r.r_id and l.licence_no = r.licence_no 
-			and (l.licence_no) = ('%s')""" %li_num
+			statement = """SELECT p.name, l.licence_no, p.addr, p.birthday, l.class, 
+			d.description, l.expiring_date, p.sin, d.c_id
+			FROM people p, drive_licence l, driving_condition d, restriction r
+		   WHERE p.sin = l.sin(+) AND
+		   l.licence_no = r.licence_no(+) AND
+		   r.r_id = d.c_id(+) AND
+		   l.licence_no = '%s'""" %li_num
 			table = searchDB(statement)
 			printLicence(table)
 		else:
 			driver_name = input("Enter driver name: ")
-			statement = """select p.name, l.licence_no, p.addr, p.birthday, 
-			l.class, dc.description, l.expiring_date from people p, 
-			drive_licence l, driving_condition dc, restriction r where p.sin = 
-			l.sin and dc.c_id = r.r_id and l.licence_no = r.licence_no and 
-			UPPER(p.name) = UPPER('%s')""" %driver_name
+			statement = """SELECT p.name, l.licence_no, p.addr, p.birthday, l.class, 
+			d.description, l.expiring_date, p.sin, d.c_id
+			FROM people p, drive_licence l, driving_condition d, restriction r
+		   WHERE p.sin = l.sin(+) AND
+		   l.licence_no = r.licence_no(+) AND
+		   r.r_id = d.c_id(+) AND
+		   UPPER(p.name) = UPPER('%s')""" %driver_name
 			table = searchDB(statement)
 			printLicence(table)
 	elif(choice=='2'):
@@ -74,9 +78,10 @@ def search():
 					continue
 				else:
 					break
-			statement = """select t.ticket_no, t.vdate, t.vtype, 
-			t.descriptions from ticket t, drive_licence d where t.violator_no 
-			= d.sin AND d.licence_no = '%s'""" %li_num
+			statement = """SELECT t.ticket_no, t.vdate, t.vtype, t.descriptions, 
+			FROM ticket t, ticket_type type
+		   	WHERE type.vtype (+)= t.vtype AND d.sin(+)=t.violator_no AND
+		   d.licence_no = '%s'"""%li_num
 			table = searchDB(statement)
 			printLicence(table)
 		else:
@@ -92,9 +97,10 @@ def search():
 					continue
 				else:
 					break
-			statement = """select t.ticket_no, t.vdate, t.vtype, t.descriptions 
-			from ticket t, drive_licence d where t.violator_no = d.sin AND 
-			d.sin = '%s'""" %SIN
+			statement = """SELECT t.ticket_no, t.vdate, t.vtype, t.descriptions, 
+			FROM ticket t, ticket_type type
+		   	WHERE type.vtype (+)= t.vtype
+		   AND t.violator_no = '%s'"""%SIN
 			table = searchDB(statement)
 			printLicence(table)
 	elif(choice=='3'):
@@ -119,13 +125,20 @@ def search():
 		return 0
 
 def printLicence(table):
+	if (len(table) == 0):
+		print("Nothing found.")
+		return
+
 	for e in table:
 		name = e[0].strip()
 		licence_no = e[1].strip()
 		addr = e[2].strip()
 		birthday = e[3]
 		Class = e[4].strip()
-		condition = e[5].strip()
+		if (e[5] is None):
+			condition = "None"
+		else:
+			condition = e[5].strip()
 		expiry = e[6]
 
 		print("Name: %s" %name)
@@ -136,8 +149,6 @@ def printLicence(table):
 		print("Driving Condition: %s" % condition)
 		print("Expiration Date: %s\n" % str(expiry.strftime('%Y-%m-%d')))
 
-	if (len(table) == 0):
-		print("Nothing found.")
 
 def printViolation(table):
 	for e in table:
