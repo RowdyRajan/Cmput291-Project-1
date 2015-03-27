@@ -21,7 +21,7 @@ def registerVehicle():
 		type_id = input("Enter the vehicle type_id: ");
 		type_id = digitNotInAskLoop(type_id, "Type_id does not exist. Please enter again: ",typeIDExists );
 	
-		insertVehicle(serial_no, maker, model, year, color, type_id);	
+		#insertVehicle(serial_no, maker, model, year, color, type_id);	
 		
 		makePerson(1)	
 
