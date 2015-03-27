@@ -1,7 +1,8 @@
 import cx_Oracle
 import getpass
 import string
-
+import datetime
+import re
 
 
 def connect():
@@ -45,7 +46,7 @@ def InDB(statement):
 def InsertData(statement):
 	# helper function to insert a file
 	global connection
-	curs = connection.cursor()
+	cursor = connection.cursor()
 	cursor.execute(statement)
 	cursor.close()
 	return
@@ -129,6 +130,12 @@ def typeIDExists(type_id):
 	statement = "select vt.type_id from vehicle_type vt where (vt.type_id) = %s" % (type_id)
 	return InDB(statement)
 
+def insertTicket(ticket_no, violator_no, vehicle_no, office_no, vtype, vdate, place, descriptions):
+	# Method that actually adds the new row to the database
+	statement = "INSERT INTO ticket VALUES('%s', '%s', '%s', '%s', '%s', to_date('%s', 'yyyy/mm/dd'),'%s', '%s')" % \
+	(ticket_no, violator_no, vehicle_no, office_no, vtype, vdate, place, descriptions)
+	return InsertData(statement)
+
 def insertVehicle(serial_no, maker, model, year,color,type_id):
 	statement = "insert into vehicle values ('%s' , '%s' , '%s' , %s , '%s' ,%s)" % (serial_no, maker, model, year,color,type_id)
 	return InsertData(statement)
@@ -140,16 +147,16 @@ def insertPerson(SIN, name, height, weight, eyecolor , haircolor,addr, gender, b
 def dateChecker(answer):
     #checks if answer is a valid date
     #asks with askString untill valid date is given 
-
     #returns a strng of valid date 
-    matches = re.findall(r'(^\s*\d{4}/\d{2}/\d{2}){1}\s*$',answer)
-    while len(mathces) == 0 or not validDate(matches):
-        if len(mathces == 0):
-            answer = input("Invalid format. Input in the format yyyy/mm/dd")
-        else:
-            answer = input("Invalid date. Please enter an actual date")
-        matches = re.findall(r'(^\s*\d{4}/\d{2}/\d{2}){1}\s*$',answer)
-    return answer
+	
+	matches = re.findall(r'(^\s*\d{4}/\d{2}/\d{2}){1}\s*$',answer)
+	while len(matches) == 0 or not validDate(answer.strip()):
+		if len(matches) == 0:
+			answer = input("Invalid format. Input in the format yyyy/mm/dd")
+		else:
+			answer = input("Invalid date. Please enter an actual date")
+		matches = re.findall(r'(^\s*\d{4}/\d{2}/\d{2}){1}\s*$',answer)
+	return answer.strip()
 
 def validDate(date):
     #checks if entered date is valid 
