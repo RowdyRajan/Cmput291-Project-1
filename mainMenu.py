@@ -3,7 +3,7 @@
 from helpers import connect
 from newVehicleRegistration import registerVehicle
 #from autoTransactionFile import autoTransaction
-#from licenceRegistrationFile import licenceRegistration
+from driveLicence import start_license
 from violationRecord import VR_Start
 from search import search
 
@@ -28,7 +28,7 @@ def main():
 			pass
 			#autoTransaction()
 		elif (choice == '3'):
-			license()
+			start_license()
 			#licenceRegistration
 		elif (choice == '4'):
 			VR_Start()
