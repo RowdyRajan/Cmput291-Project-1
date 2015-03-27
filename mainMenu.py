@@ -28,7 +28,7 @@ def main():
 			pass
 			#autoTransaction()
 		elif (choice == '3'):
-			pass
+			license()
 			#licenceRegistration
 		elif (choice == '4'):
 			VR_Start()
@@ -36,10 +36,12 @@ def main():
 			search()
 		elif (choice == '6'):
 			#leave program
-			return 0
+			global connection
+			connection.close()
+			exit()
 		else:
 			print('Something went wrong. Exiting.')
-			return 1
+			exit()
 
 if __name__ == '__main__':
 #prompt user to connect to database
