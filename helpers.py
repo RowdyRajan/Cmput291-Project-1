@@ -1,6 +1,7 @@
 import cx_Oracle
 import getpass
 import string
+
 def connect():
 	user = input("Username [%s]: " % getpass.getuser())
 	if not user:
@@ -90,7 +91,7 @@ def ticketIDinDB(input):
 	statement = "select t.ticket_no from ticket t where (t.ticket_no) = ('%s')" % idNum
 	return(ReturnData(statement))
 				
-def VINisIn(VIN):
+def VINExists(VIN):
 	# Returns true if the given VIN is on the database
 	statement = "select v.serial_no from vehicle v where v.serial_no = ('" + str(VIN) + "')"
 	return(InDB(statement))
