@@ -78,8 +78,8 @@ def search():
 					continue
 				else:
 					break
-			statement = """SELECT t.ticket_no, t.vdate, t.vtype, t.descriptions, 
-			FROM ticket t, ticket_type type
+			statement = """SELECT t.ticket_no, t.vdate, t.vtype, t.descriptions 
+			FROM ticket t, ticket_type type, drive_licence d
 		   	WHERE type.vtype (+)= t.vtype AND d.sin(+)=t.violator_no AND
 		   d.licence_no = '%s'"""%li_num
 			table = searchDB(statement)
@@ -97,7 +97,7 @@ def search():
 					continue
 				else:
 					break
-			statement = """SELECT t.ticket_no, t.vdate, t.vtype, t.descriptions, 
+			statement = """SELECT t.ticket_no, t.vdate, t.vtype, t.descriptions, type.vtype  
 			FROM ticket t, ticket_type type
 		   	WHERE type.vtype (+)= t.vtype
 		   AND t.violator_no = '%s'"""%SIN

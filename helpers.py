@@ -126,9 +126,9 @@ def OwnerExists(SIN,VID):
 	return(InDB(statement))
 
 
-def licenceExists(SIN):
+def licenceExists(l_no):
 	# License for Inputted SIN exists?
-	statement = "select l.sin from drive_licence l where (l.sin) = ('%s')" % (SIN)
+	statement = "select l.licence_no from drive_licence l where (l.licence_no) = ('%s')" % (l_no)
 	return InDB(statement)
 
 def typeIDExists(type_id):
@@ -146,6 +146,9 @@ def insertPerson(SIN, name, height, weight, eyecolor , haircolor,addr, gender, b
 
 def insertOwner(owner_id, vehicle_id, is_primary_owner):
 	statement = "insert into owner values ('%s' , '%s' , '%s')" % (owner_id,vehicle_id, is_primary_owner)
+
+def insertTicket(ticket_no, violator_no, vehicle_no, office_no, vtype, vdate, place, description):
+	statement = "insert into ticket values ('%s' , '%s' , '%s' , '%s' , '%s' , to_date('%s', 'yyyy/mm/dd'), '%s', '%s' )" % (ticket_no, violator_no, vehicle_no, office_no, vtype, vdate, place, description)
 	return InsertData(statement)
 
 def dateChecker(answer):

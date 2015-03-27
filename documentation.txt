@@ -32,8 +32,52 @@ Driver Licence Registration:
 
 -----------------------------------------------------------------------------------------------------------------------
 Violation Record:
+The user is presented with the option to begin entering a violation record, or to return 
+to the main menu.
+Prompt for SIN of issuing officer
+	Calls sinExists from helpers
+		If no officer, call tryAgain() to ask if they want to try again
+			if yes, remprompt for SIN
+			If no, return to main menu
 
+Prompt for SIN of violating person
+	calls sinExists from helpers	
+		If SIN not in database, call tryAgain() to ask if they want to try again
+			if yes, reprompt for SIN
+			If no, return to main menu
 
+Prompt for Vehicle Serial Number
+	calls VINExists from helpers	
+		If VIN not present in database, call tryAgain() to ask if they want to try again
+			if yes, reprompt for VIN
+			If no, return to main menu
+
+Prompt for Type of violation
+	calls InDB from helpers
+		If violation type not in database, call tryAgain()
+			If yes, reprompt for violation
+			If no, return to main menu
+
+Prompt for date of violation
+	calls dateChecker from helpers, which reprompts for incorrect dates
+
+Prompt for Location of Violation
+	If Locations is more than 20 characters, call tryAgain()
+		If yes, reprompt for Location
+		If no, return to main menu
+
+Prompt for description
+	If description longer than 1024 characters, call tryAgain()
+		if yes, reprompt for description
+		if no, return to main menu
+
+After all inputs are finished, appropriate parameters are passed into the insertTicket() function.
+This function comes from helpers. It inserts the values into the people table via the 
+InsertData() helper function and an appropriately formatted query.
+
+Function tryAgain() prompts the user for a yes/no answer. If the user enters 
+yes, the function returns true. If the user enters no, the function returns 
+false. If the user enters invalid information, it asks them again.
 
 -----------------------------------------------------------------------------------------------------------------------
 Search Engine:
