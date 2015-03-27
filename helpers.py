@@ -1,31 +1,50 @@
 import cx_Oracle
+import getpass
 import string
 
 
 
-connection = cx_Oracle.connect('rkjassal/rajaniscoo1@ gwynne.cs.ualberta.ca:1521/CRS');
+def connect():
+	user = input("Username [%s]: " % getpass.getuser())
+	if not user:
+		user = getpass.getuser()
+	pw = getpass.getpass()
+	conString=''+user+'/' + pw +'@gwynne.cs.ualberta.ca:1521/CRS'
+	global connection
+	connection = cx_Oracle.connect(conString)
+
+def searchDB(query):
+	cursor = connection.cursor()
+	cursor.execute(query)
+	table = cursor.fetchall()
+	cursor.close()
+	return table
+
 def ReturnData(statement):
 	# helper function for getX
-	curs = connection.cursor()
-	curs.execute(statement)
+	global connection
+	cursor = connection.cursor()
+	cursor.execute(statement)
 	rows = curs.fetchall()
-	curs.close()
+	cursor.close()
 	return rows[0][0]
 
 def InDB(statement):
 	# helper function to see if something exists in 
-	curs = connection.cursor()
-	curs.execute(statement)
+	global connection
+	cursor = connection.cursor()
+	cursor.execute(statement)
 	rows = curs.fetchall()
 	if len(rows) > 0:
 		curs.close()
 		return True
-	curs.close()
+	cursor.close()
 	return False
 
 
 def InsertData(statement):
 	# helper function to insert a file
+	global connection
 	curs = connection.cursor()
 	curs.execute(statement)
 	curs.close()
@@ -90,7 +109,7 @@ def ticketIDinDB(input):
 	statement = "select t.ticket_no from ticket t where (t.ticket_no) = ('%s')" % idNum
 	return(ReturnData(statement))
 				
-def VINisIn(VIN):
+def VINExists(VIN):
 	# Returns true if the given VIN is on the database
 	statement = "select v.serial_no from vehicle v where v.serial_no = ('" + str(VIN) + "')"
 	return(InDB(statement))

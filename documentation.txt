@@ -1,0 +1,74 @@
+Login: connect() is called from helpers.py, a file containing a number of small methods used throughout the 
+program. Connect prompts the user for their sqlplus username and password and connects them to the server at
+gwynne.cs.ualberta.ca:1521/CRS. 
+
+Main Menu:
+The user is presented with a main menu that allows them to select from one of five options relating to the database. 
+The user enters a digit corresponding with the menu item they wish to do. An invalid response re-prompts the user.
+The user is re-prompted anytime they enter an invalid menu choice throughout the program.
+
+Menu options are:
+1. New Vehicle Registration - Calls [ ] from newVehicleRegistration.py
+2. Auto Transaction - Calls [ ] from [ ]
+3. Driver Licence Registration - Calls [ ] from [ ]
+4. Violation Record - Calls ticketInput() from violationRecord.py
+5. Search Engine - Calls search() from search.py
+
+Upon completion of executing any of the methods called from the main menu, the method will return back 
+to the main menu such that the user can continue working with the database.
+
+-----------------------------------------------------------------------------------------------------------------------
+New Vehicle Registration:
+ 
+ 
+ 
+ 
+ 
+-----------------------------------------------------------------------------------------------------------------------
+Auto Transaction:
+
+-----------------------------------------------------------------------------------------------------------------------
+Driver Licence Registration:
+
+-----------------------------------------------------------------------------------------------------------------------
+Violation Record:
+
+
+
+-----------------------------------------------------------------------------------------------------------------------
+Search Engine:
+User is presented with a menu with four options, three of which are for searching info in the database
+
+1. Licence Information
+	1. Search by Licence Number
+		calls printLicence()
+			calls searchDB() from helpers
+	2. Search by Name
+		calls printLicence()
+			calls searchDB() from helpers
+2. Violation Records
+	1. Search by Licence Number
+		calls printViolation()
+			calls searchDB() from helpers
+	2. Search by SIN
+		calls printViolation()
+			calls searchDB() from helpers
+3. Vehicle History
+	calls printVehicleHistory()
+		calls searchDB() from helpers
+4. Return - returns to previous menu
+
+When invalid options are entered, and invalid data is entered, the user is prompted to re-enter their data.
+Licence information takes a licence number or name from the user, which is then passed to the appropriate
+query. That query is passed to printLicence which passes it to SearchDB from helpers.py 
+which in turn executes the query and returns the results to printLicence. 
+PrintLicence iterates through the results, and prints the formatted output to the screen.
+
+Violation Records and Vehicle history operate on the same principle with printViolation and 
+printVehicleHistory respectively. Licence numbers, SINs and Vehicle Serial Numbers are passed to 
+the appropriate queries, where they are executed by SearchDB() from helpers. The table results are 
+returned, and then iterated through via the printViolation/printVehicleHistory functions 
+
+-----------------------------------------------------------------------------------------------------------------------
+helpers.py:
+
