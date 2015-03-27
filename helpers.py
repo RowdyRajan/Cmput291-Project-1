@@ -133,4 +133,31 @@ def insertVehicle(serial_no, maker, model, year,color,type_id):
 	statement = "insert into vehicle values ('%s' , '%s' , '%s' , %s , '%s' ,%s)" % (serial_no, maker, model, year,color,type_id)
 	return InsertData(statement)
 
+def insertPerson(SIN, name, height, weight, eyecolor , haircolor,addr, gender, birthday):
+	statement = "insert into people values ('%s' , '%s' , %s , %s , '%s' ,'%s', '%s', '%s', to_date('%s', 'yyyy/mm/dd'))" % (SIN,name,height,weight,eyecolor,haircolor,addr, gender,birthday)
+	return InsertData(statement)
+
+def dateChecker(answer):
+    #checks if answer is a valid date
+    #asks with askString untill valid date is given 
+
+    #returns a strng of valid date 
+    matches = re.findall(r'(^\s*\d{4}/\d{2}/\d{2}){1}\s*$',answer)
+    while len(mathces) == 0 or not validDate(matches):
+        if len(mathces == 0):
+            answer = input("Invalid format. Input in the format yyyy/mm/dd")
+        else:
+            answer = input("Invalid date. Please enter an actual date")
+        matches = re.findall(r'(^\s*\d{4}/\d{2}/\d{2}){1}\s*$',answer)
+    return answer
+
+def validDate(date):
+    #checks if entered date is valid 
+    try:
+        datetime.datetime.strptime(date, '%Y/%m/%d')
+    except ValueError:
+        return False
+
+    return True
+
 

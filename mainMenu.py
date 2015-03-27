@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 #Main menu - provides Five options to operate on the database
 from helpers import connect
-#from newVehicleRegistration import registerVehicle
+from newVehicleRegistration import registerVehicle
 #from autoTransactionFile import autoTransaction
 #from licenceRegistrationFile import licenceRegistration
 from violationRecord import VR_Start
@@ -23,7 +23,7 @@ def main():
 			else:
 				break
 		if (choice=='1'):
-			#registerVehicle()
+			registerVehicle()
 		elif (choice == '2'):
 			#autoTransaction()
 		elif (choice == '3'):
