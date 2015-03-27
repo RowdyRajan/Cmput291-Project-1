@@ -51,7 +51,7 @@ def getInfo():
 	while True:
 		if(licNo == None):
 			licNo = input("Enter licence number: ")
-			if( sinExists(licNo) == False):
+			if( (licNo) == False):
 				print("No record of licNo in Database.")
 				if(tryAgain()):
 					licNo = None
