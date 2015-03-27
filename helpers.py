@@ -120,6 +120,12 @@ def sinExists(SIN):
 	statement = "select p.sin from people p where (p.sin) = ('" + str(SIN) + "')"
 	return(InDB(statement))
 
+def OwnerExists(SIN,VID):
+	# Returns if SIN exists
+	statement = "select o.owner_id from owner o where (o.owner_id) = ('%s') AND (o.vehicle_id) = ('%s')" % (SIN, VID)
+	return(InDB(statement))
+
+
 def licenceExists(SIN):
 	# License for Inputted SIN exists?
 	statement = "select l.sin from drive_licence l where (l.sin) = ('%s')" % (SIN)
@@ -138,19 +144,23 @@ def insertPerson(SIN, name, height, weight, eyecolor , haircolor,addr, gender, b
 	statement = "insert into people values ('%s' , '%s' , %s , %s , '%s' ,'%s', '%s', '%s', to_date('%s', 'yyyy/mm/dd'))" % (SIN,name,height,weight,eyecolor,haircolor,addr, gender,birthday)
 	return InsertData(statement)
 
+def insertOwner(owner_id, vehicle_id, is_primary_owner):
+	statement = "insert into owner values ('%s' , '%s' , '%s')" % (owner_id,vehicle_id, is_primary_owner)
+	return InsertData(statement)
+
 def dateChecker(answer):
     #checks if answer is a valid date
     #asks with askString untill valid date is given 
 
     #returns a strng of valid date 
     matches = re.findall(r'(^\s*\d{4}/\d{2}/\d{2}){1}\s*$',answer)
-    while len(mathces) == 0 or not validDate(matches):
-        if len(mathces == 0):
-            answer = input("Invalid format. Input in the format yyyy/mm/dd")
+    while len(matches) == 0 or not validDate(answer.strip()):
+        if len(matches) == 0:
+            answer = input("Invalid format. Input in the format yyyy/mm/dd: ")
         else:
-            answer = input("Invalid date. Please enter an actual date")
+            answer = input("Invalid date. Please enter an actual date: ")
         matches = re.findall(r'(^\s*\d{4}/\d{2}/\d{2}){1}\s*$',answer)
-    return answer
+    return answer.strip()
 
 def validDate(date):
     #checks if entered date is valid 
@@ -160,5 +170,3 @@ def validDate(date):
         return False
 
     return True
-
-
