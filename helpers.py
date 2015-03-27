@@ -1,8 +1,9 @@
 import cx_Oracle
 import string
 
-connection = cx_Oracle.connect('rkjassal/rajaniscoo1@ gwynne.cs.ualberta.ca:1521/CRS');
 
+
+connection = cx_Oracle.connect('rkjassal/rajaniscoo1@ gwynne.cs.ualberta.ca:1521/CRS');
 def ReturnData(statement):
 	# helper function for getX
 	curs = connection.cursor()
@@ -24,7 +25,7 @@ def InDB(statement):
 
 
 def InsertData(statement):
-	# helper function for getX
+	# helper function to insert a file
 	curs = connection.cursor()
 	curs.execute(statement)
 	curs.close()
@@ -104,6 +105,13 @@ def licenceExists(SIN):
 	statement = "select l.sin from drive_licence l where (l.sin) = ('%s')" % (SIN)
 	return InDB(statement)
 
+def typeIDExists(type_id):
+	#Checks to see if a vehicle type id exits 
+	statement = "select vt.type_id from vehicle_type vt where (vt.type_id) = %s" % (type_id)
+	return InDB(statement)
+
 def insertVehicle(serial_no, maker, model, year,color,type_id):
-	statement = "insert into vehicle values ('%s' , '%s' , '%s' , %d , '%s' ,%d)" % (serial_no, maker, model, year,color,type_id)
+	statement = "insert into vehicle values ('%s' , '%s' , '%s' , %s , '%s' ,%s)" % (serial_no, maker, model, year,color,type_id)
 	return InsertData(statement)
+
+
