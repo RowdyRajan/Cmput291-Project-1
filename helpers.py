@@ -25,7 +25,7 @@ def ReturnData(statement):
 	global connection
 	cursor = connection.cursor()
 	cursor.execute(statement)
-	rows = curs.fetchall()
+	rows = cursor.fetchall()
 	cursor.close()
 	return rows[0][0]
 
@@ -34,9 +34,9 @@ def InDB(statement):
 	global connection
 	cursor = connection.cursor()
 	cursor.execute(statement)
-	rows = curs.fetchall()
+	rows = cursor.fetchall()
 	if len(rows) > 0:
-		curs.close()
+		cursor.close()
 		return True
 	cursor.close()
 	return False
@@ -46,8 +46,8 @@ def InsertData(statement):
 	# helper function to insert a file
 	global connection
 	curs = connection.cursor()
-	curs.execute(statement)
-	curs.close()
+	cursor.execute(statement)
+	cursor.close()
 	return
 
 def getName(SIN):
