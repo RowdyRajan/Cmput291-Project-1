@@ -21,6 +21,12 @@ def searchDB(query):
 	cursor.close()
 	return table
 
+def deleteOwner(VIN):
+	query = "DELETE FROM owner WHERE vehicle_id = '%s'"%VIN
+	cursor = connection.cursor()
+	cursor.execute(query)
+	cursor.close()
+
 def ReturnData(statement):
 	# helper function for getX
 	global connection
