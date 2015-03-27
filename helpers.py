@@ -22,6 +22,14 @@ def InDB(statement):
 	curs.close()
 	return False
 
+
+def InsertData(statement):
+	# helper function for getX
+	curs = connection.cursor()
+	curs.execute(statement)
+	curs.close()
+	return
+
 def getName(SIN):
 	# Returns SIN's name
 	statement = "select p.name from people p where (p.sin) = ('%s')" % (SIN)
@@ -98,4 +106,4 @@ def licenceExists(SIN):
 
 def insertVehicle(serial_no, maker, model, year,color,type_id):
 	statement = "insert into vehicle values ('%s' , '%s' , '%s' , %d , '%s' ,%d)" % (serial_no, maker, model, year,color,type_id)
-	return ReturnData(statement)
+	return InsertData(statement)
