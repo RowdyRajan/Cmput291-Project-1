@@ -1,5 +1,5 @@
 from helpers import *
-
+import re
 def main():
 	while(True):
 		serial_no = input("Enter new vehicle ID: ");
@@ -76,7 +76,23 @@ def yesOrNoChecker(askString):
 	if answer == 'y':
 		return True 
 	return False 
+
+def dateChecker(answer, askString):
+	matches = re.findall(r'(^\s*\d{4}/\d{2}/\d{2}){1}\s*$',answer)	
+	while len(mathces) == 0 or !validDate(matches):
+		if len(mathces == 0)::
+			answer = input("Invalid format. Input in the format yyyy/mm/dd")
+		else:
+			
+		matches = re.findall(r'(^\s*\d{4}/\d{2}/\d{2}){1}\s*$',answer)	
+def validDate(date):
+	try:
+		datetime.datetime.strptime(date, '%Y/%m/%d')
+	except ValueError:
+		return False	
 	
+	return True
+
 def makeAPerson(OwnerType):
 	
 	OwnerTypeMap = { 1 : ["primary owner", 'y'] , 2 : ["secondary owner", 'n']}
@@ -97,9 +113,9 @@ def makeAPerson(OwnerType):
 			height = floatChecker(height, "Invalid number. Please enter again")
 
 			weight = input("Enter the person's weight")
-            weight = floatChecker(weight ,"Invalid number. Please enter again")
+			weight = floatChecker(weight ,"Invalid number. Please enter again")
 			eyecolor  = input("Enter the person's eyecolor")
-            eyecolor = blankSpaceLoop(eyecolor ,"Blank entree. Please enter something")
+			eyecolor = blankSpaceLoop(eyecolor ,"Blank entree. Please enter something")
 
 			addr  = input("Enter the person's address")
 			addr = blankSpaceLoop(addr ,"Blank entree. Please enter something")
@@ -107,8 +123,10 @@ def makeAPerson(OwnerType):
 						
 			gender  = input("Enter the person's gender")
 			while answer != 'm' or answer != 'f':
-				gender = input("Please enter m or f")
-
+				gender = input("Please enter m or f")	
+			
+			birthday = input("Enter date of birth: ")	
+			 
 			
 
 if __name__ == "__main__":
