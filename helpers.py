@@ -45,7 +45,7 @@ def InDB(statement):
 def InsertData(statement):
 	# helper function to insert a file
 	global connection
-	curs = connection.cursor()
+	cursor = connection.cursor()
 	cursor.execute(statement)
 	cursor.close()
 	return

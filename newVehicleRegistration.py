@@ -1,11 +1,10 @@
 from helpers import *
 import re
-import datetime
 
 def registerVehicle():
 	while(True):
 		serial_no = input("Enter new vehicle ID: ");
-		serial_no = digitAskLoop(serial_no, "Vehicle ID already exits. Please enter a new ID: ", VINisIn);
+		serial_no = digitAskLoop(serial_no, "Vehicle ID already exits. Please enter a new ID: ", VINExists);
 	
 		maker = input("Enter vehicle maker: ");
 		maker = blankSpaceLoop(maker, "Invalid Maker. Please re-enter: ");
@@ -113,15 +112,15 @@ def blankSpaceLoop(answer, askString):
 def yesOrNoChecker(askString):
 	#Checks if answer is yes or no
 	answer = input(askString)
-	while answer != 'y' or answer != 'n':
-		answer = input("Please enter y or n")
+	while answer not in ['y', 'n']:
+		answer = input("Please enter y or n: ")
 
 	if answer == 'y':
 		return True 
 	return False 
 
 
-def makeAPerson(OwnerType):
+def makePerson(OwnerType):
 	"""
 	Makes a person and adds them to the data base
 	Ownertype is the type of owner they are:
@@ -129,37 +128,38 @@ def makeAPerson(OwnerType):
 	2= secondary owner
 	"""
 
-	OwnerTypeMap = { 1 : ["primary owner", 'y'] , 2 : ["secondary owner", 'n']}
+	ownerTypeMap = { 1 : ["primary owner", 'y'] , 2 : ["secondary owner", 'n']}
 
 	while True:
-		SIN = input("Enter the SIN of the new" + ownerTypeMap[OwnerType][0]);
+		SIN = input("Enter the SIN of the new " + ownerTypeMap[OwnerType][0] + ' ');
 		SIN = digitChecker(SIN, "Not a valid SIN. Please enter again");
 			
 		if not sinExists(SIN):
-			if not yesOrNoChecker("SIN does not exist. Would you like to make this SIN a person?[y or n]"):	 
+			if not yesOrNoChecker("SIN does not exist. Would you like to make this SIN a person?[y or n]: "):	 
 				continue
 			
-			name = input("Enter the persons name")
-			name = blankSpaceLoop(name, "Blank Name. Please enter something")
+			name = input("Enter the persons name: ")
+			name = blankSpaceLoop(name, "Blank Name. Please enter something: ")
 			
 						 				
-			height = input("Enter the person's height")
-			height = floatChecker(height, "Invalid number. Please enter again")
+			height = input("Enter the person's height: ")
+			height = floatChecker(height, "Invalid number. Please enter again: ")
 
-			weight = input("Enter the person's weight")
-			weight = floatChecker(weight ,"Invalid number. Please enter again")
-			eyecolor  = input("Enter the person's eyecolor")
-			eyecolor = blankSpaceLoop(eyecolor ,"Blank entree. Please enter something")
+			weight = input("Enter the person's weight: ")
+			weight = floatChecker(weight ,"Invalid number. Please enter again: ")
+			eyecolor  = input("Enter the person's eyecolor: ")
+			eyecolor = blankSpaceLoop(eyecolor ,"Blank entree. Please enter something: ")
 
-			addr  = input("Enter the person's address")
-			addr = blankSpaceLoop(addr ,"Blank entree. Please enter something")
+			addr  = input("Enter the person's address: ")
+			addr = blankSpaceLoop(addr ,"Blank entree. Please enter something: ")
 			
 						
-			gender  = input("Enter the person's gender")
-			while answer != 'm' or answer != 'f':
-				gender = input("Please enter m or f")	
+			gender  = input("Enter the person's gender: ")
+			while gender not in ['m', 'f']
+				gender = input("Please enter m or f: ")	
 			
 			birthday = input("Enter date of birth: ")	
 			brithday = dateChecker(birthday)
 			
-			
+			insertPerson(SIN,name,height,weight,eyecolor,addr,gender,birthday)
+		

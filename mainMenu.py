@@ -25,8 +25,10 @@ def main():
 		if (choice=='1'):
 			registerVehicle()
 		elif (choice == '2'):
+			pass
 			#autoTransaction()
 		elif (choice == '3'):
+			pass
 			#licenceRegistration
 		elif (choice == '4'):
 			VR_Start()
