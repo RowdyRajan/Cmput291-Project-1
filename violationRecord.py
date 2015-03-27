@@ -1,5 +1,3 @@
-import datetime
-from helpers import *
 
 """
 Allows a traffic violation to be put into the system by an Officer.
@@ -24,6 +22,9 @@ Assignment Tables:
 
 """
 
+import datetime
+from helpers import *
+
 def VR_Start():
 	print("Welcome to the violation registration service. From here you can add a ticket \
 		for a traffic violation to the database\n")
@@ -37,27 +38,17 @@ def VR_Start():
 			continue
 
 		if(select == 1):
-			global connection
-			curs = connection.cursor()
-			ticket = ticketInput()
-			curs.execute(ticket)
-			connection.commit()
-			cursor.close()
+			ticketInput()
+			
 		if(select == 2):
 			return
-	
 
-def insertTicket(ticket_no, violator_no, vehicle_no, office_no, vtype, vdate, place, descriptions):
-	# Method that actually adds the new row to the database
-	statement = "INSERT INTO ticket VALUES(%s, %s, %s, %s, %s, %s, %s, %s)" % \
-	(ticket_no, violator_no, vehicle_no, office_no, vtype, vdate, place, descriptions)
-	return statement
 
 def nextID():
 	# Generates the next ticket ID by incrimenting the highest current ID by one
 	statement = "SELECT max(ticket_no) from ticket"
 	rows = ReturnData(statement)
-	ID = rows[0] + 1
+	ID = rows + 1
 	return ID
 
 def ticketInput():
@@ -73,8 +64,8 @@ def ticketInput():
 	# Prompt user to enter data for a new ticket entry
 	while True:
 		if(officer == None):
-			officer = raw_input("SIN of issuing officer: ")
-			if( InDB(sinExists(officer)) == False):
+			officer = input("SIN of issuing officer: ")
+			if( sinExists(officer) == False):
 				print("No record of officer in Database.")
 				if(tryAgain()):
 					officer = None
@@ -83,8 +74,8 @@ def ticketInput():
 					return None
 			
 		if(violator == None):
-			violator = raw_input("SIN of violating person: ")
-			if( InDB(sinExists(violator)) == False):
+			violator = input("SIN of violating person: ")
+			if( sinExists(violator) == False):
 				print("No record of person in Database, please try again.")
 				if(tryAgain()):
 					violator = None
@@ -94,8 +85,8 @@ def ticketInput():
 			
 
 		if(vehicle == None):
-			vehicle = raw_input("Serial Number vehicle: ")
-			if( InDB(VINExists(vehicle)) == False ):
+			vehicle = input("Serial Number vehicle: ")
+			if( VINExists(vehicle) == False ):
 				print("No record of vehicle in Database, please try again.")
 				if(tryAgain()):
 					vehicle = None
@@ -103,10 +94,10 @@ def ticketInput():
 				else:
 					return None
 			
-	if(vtype == None):
-		vtype = raw_input("Type of violation: ")
-		statement = "SELECT v.vtype FROM ticket_type v WHERE (v.vtype) = ('%s')" % (vtype)
-		if( InDB(statement) == False ):
+		if(vtype == None):
+			vtype = input("Type of violation: ")
+			statement = "SELECT v.vtype FROM ticket_type v WHERE (v.vtype) = ('%s')" % (vtype)
+			if( InDB(statement) == False ):
 				print("Invalid violation type, please re-enter.")
 				if(tryAgain()):
 					vtype = None
@@ -115,17 +106,11 @@ def ticketInput():
 					return None
 								
 		if(vdate == None):
-			vdate = raw_input("Date of violation (eg. 01-APR-89): ").strip()
-			if( InDB(statement) == False ):
-				print("Invalid date format")
-				if(tryAgain()):
-					vdate = None
-					continue
-				else:
-					return None
+			vdate = input("Date of violation (eg. yyyy/mm/dd): ").strip()
+			vdate = dateChecker(vdate)
 
 		if(place == None):
-			place = raw_input("Location (20 characters): ").strip()
+			place = input("Location (20 characters): ").strip()
 			if( len(place) > 20 ):
 				print("Entry too long, please re-enter.")
 				if(tryAgain()):
@@ -135,7 +120,7 @@ def ticketInput():
 					return None
 
 		if(description == ""): # Optional
-			description = raw_input("Further comments or descriptions (max 1000 characters): ")
+			description = input("Further comments or descriptions (max 1000 characters): ")
 
 			if( len(description) > 1024 ):
 				print("Entry too long.")
@@ -152,7 +137,7 @@ def tryAgain():
 	# Possible helper function to repeat input attempt			
 	print("Try again? (Y/N):\n\r")
 	while(1):
-		ans = raw_input().strip().lower()
+		ans = input().strip().lower()
 		if ans in ("yes", "y"):
 			return True
 		if ans in ("no", "n"):
@@ -160,6 +145,7 @@ def tryAgain():
 
 		
 if __name__ == '__main__':
+	connect()
 	VR_Start()			
 			
 
