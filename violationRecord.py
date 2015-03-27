@@ -1,5 +1,6 @@
 import datetime
-import helpers
+from collections import defaultdict
+from helpers import *
 
 class voilationRecord():
 	"""
@@ -31,7 +32,7 @@ class voilationRecord():
 	def insertTicket(ticket_no, violator_no, vehicle_no, office_no, vtype, vdate, place, descriptions):
 		# Method that actually adds the new row to the database
 		cursor = connection.cursor()
-		statement = "INSERT INTO ticket VALUES(%s, %s, %s, %s, %s, %s, %s, %s") % \
+		statement = "INSERT INTO ticket VALUES(%s, %s, %s, %s, %s, %s, %s, %s)" % \
 		(ticket_no, violator_no, vehicle_no, office_no, vtype, vdate, place, descriptions)
 
 		# Error check
@@ -48,7 +49,7 @@ class voilationRecord():
 		ID = rows[0] + 1
 		return ID
 
-	def ticketInput:
+	def ticketInput():
 
 		officer = None
 		violator = None
@@ -57,59 +58,73 @@ class voilationRecord():
 		description = ""
 
 		# Prompt user to enter data for a new ticket entry
-		while(1){
-
-			if(!officer){
+		while True:
+			if(officer == None):
 				officer = raw_input("SIN of issuing officer:\n\r")
-				if( !InDB( sinExists(officer) ) ) {
-					print("No record of officer in Database, please try again.\n\r")
-					continue
-				}
-			}
-
-			if(!violator){
+				if( InDB(sinExists(officer)) == False):
+					print("No record of officer in Database.")
+					if(tryAgain()):
+						continue
+					else:
+						return None
+				
+			if(violator == None):
 				violator = raw_input("SIN of violating person:\n\r")
-				if( !InDB( sinExists(violator) ) ) {
+				if( InDB(sinExists(violator)) == False):
 					print("No record of person in Database, please try again.\n\r")
-					continue
-				}
-			}
+					if(tryAgain()):
+						continue
+					else:
+						return None
+			
 
-			if(!vehicle){
+			if(vehicle == None):
 				vehicle = raw_input("Serial Number vehicle:\n\r")
-				if( !InDB( VINisIn(vehicle) ) ) {
+				if( InDB(VINisIn(vehicle)) == False ):
 					print("No record of vehicle in Database, please try again.\n\r")
-					continue
-				}
-			}
-
-			if(!vtype){
+					if(tryAgain()):
+						continue
+					else:
+						return None
+				
+			if(vtype == None):
 				vtype = raw_input("Type of violation:\n\r")
 				statement = "SELECT v.vtype FROM ticket_type v WHERE (v.vtype) = ('%s')" % (vtype)
-				if( !InDB(statement) ) {
+				if( InDB(statement) == False ):
 					print("Invalid violation type, please re-enter.\n\r")
-					continue
-				}
-			}			
+					if(tryAgain()):
+						continue
+					else:
+						return None
+									
+			vdate = raw_input("Date:\n\r").strip()
 
-			vdate = raw_input("Date:\n\r")
-
-			place = raw_input("Location:\n\r")
+			place = raw_input("Location:\n\r").strip()
 
 			description = raw_input("Further comments or descriptions (optional):\n\r")
 
 			insertTicket(nextID(), violator, vehicle, officer, vtype, vdate, place, description)
-		}
+		
 
-	def inputExists_ta():
-		# Possible helper function to repeat input attempt
-		if( InDB( sinExists(officer) ) ) {
-			
-		} else {
-			print("No record in Database, try again (Y/N).\n\r")
-			# string parsing and some loop stuff...
+	def negOne():
+		return (-1)
 
-		}
+	def tryAgain():
+		# Possible helper function to repeat input attempt			
+		print("Try again? (Y/N):\n\r")
+		while(1):
+			yes = raw_input().strip().lower()
+
+			ans = defaultdict(negOne)
+			ans.update({"yes": True, "y": True, "no": False, "n": False})
+
+			if(ans[yes] == (-1)):
+				continue
+
+			else:
+				return ans[yes]
+
+
 		
 			
 			
