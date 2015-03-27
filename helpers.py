@@ -21,6 +21,9 @@ def searchDB(query):
 	cursor.close()
 	return table
 
+def formatPic():
+	pass
+
 def ReturnData(statement):
 	# helper function for getX
 	global connection
@@ -152,7 +155,10 @@ def insertTicket(ticket_no, violator_no, vehicle_no, office_no, vtype, vdate, pl
 	return InsertData(statement)
 
 def insertLicence(licNo, SIN, licClass, photo, issuingDate, expireDate):
-	statement = "INSERT into ticket values ('%s', '%s' , '%s' , to_date('%s', 'yyyy/mm/dd'), to_date('%s', 'yyyy/mm/dd'))" %
+	statement = "INSERT into ticket values ('%s', '%s' , '%s' , to_date('%s', 'yyyy/mm/dd'), to_date('%s', 'yyyy/mm/dd'))" % (licNo, SIN, licClass, photo, issuingDate, expireDate)
+	InsertData(statement)
+	return
+
 
 def dateChecker(answer):
     #checks if answer is a valid date
