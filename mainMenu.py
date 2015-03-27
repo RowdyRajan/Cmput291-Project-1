@@ -6,8 +6,6 @@ from helpers import connect
 #from licenceRegistrationFile import licenceRegistration
 from violationRecord import VR_Start
 from search import search
-#prompt user to connect to database
-connect()
 
 def main():
 	while True:
@@ -40,3 +38,8 @@ def main():
 		else:
 			print('Something went wrong. Exiting.')
 			return 1
+
+if __name__ == '__main__':
+#prompt user to connect to database
+	connect()
+	main()
