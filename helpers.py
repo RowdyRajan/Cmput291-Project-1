@@ -1,7 +1,8 @@
 import cx_Oracle
 import getpass
 import string
-
+import re
+import datetime
 
 
 def connect():
