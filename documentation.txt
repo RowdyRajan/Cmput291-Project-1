@@ -19,16 +19,46 @@ to the main menu such that the user can continue working with the database.
 
 -----------------------------------------------------------------------------------------------------------------------
 New Vehicle Registration:
+This presents a menu such that a user can enter all of the information pertaining to 
+a new vehicle, and input that data to the database.
+
+Prompt user for Vehicle ID
+	call digitAskLoop() from helpers, ensure duplicate VIN doesn't exist
+Prompt user for vehicle maker
+	call blankSpaceLoop() from helpers to ensure invalid Maker isn't entered
+Prompt user for vehicle model
+	call blankSpaceLoop() from helpers, ensure invalid model isn't entered
+Prompt user for vehicle year
+	call maxWidthDigitChecker from helpers, esnure valid year is entered
+Prompt user for vehicle color
+	call blankSpaceLoop() from helpers, ensure color is valid
+Prompt user for vehicle type ID
+	call digitNotInAskLoop from helpers, ensure vehicle type entered exists in database
+
+Call insertVehicle() from helpers, insert a new vehicle into the vehicle table with 
+Call makePerson() from helpers, which prompts the user to create a new owner.
  
- 
- 
- 
- 
------------------------------------------------------------------------------------------------------------------------
-Auto Transaction:
+
 
 -----------------------------------------------------------------------------------------------------------------------
+Auto Transaction:
+Prompt for transaction_id
+	if in database, prompt user again
+Prompt for seller_id
+	if not in database, prompt to add person
+prompt for buyer_id
+	if not in database, prompt to add person
+prompt for vehicle_id
+	if not in database, prompt to add vehicle
+prompt for date of sale, handle with date method
+prompt for price, ensure is no more 999999999 (numeric(9,2))
+-----------------------------------------------------------------------------------------------------------------------
 Driver Licence Registration:
+
+Presents users with an option to enter new driver licence information or return to main menu
+Takes licence number, name, SIN, class, and photo. Reprompts user as specified before 
+using the tryAgain method. 
+
 
 -----------------------------------------------------------------------------------------------------------------------
 Violation Record:
@@ -115,4 +145,28 @@ returned, and then iterated through via the printViolation/printVehicleHistory f
 
 -----------------------------------------------------------------------------------------------------------------------
 helpers.py:
+inDB() - takes a query, and returns whether values are present
+
+digitAskLoop() takes a result, a string asking a question, and a corresponding 
+function. The loop will ask the user the question, check their result against 
+the inputted checking function, ensure that the result is a digit,  and will 
+reprompt the user until an appropriate answer is
+given. When the appropriate answer is given, the answer is returned.
+
+digitNotInAskLoop() operates the same way as digitAskLoop(), except it will keep 
+reprompting the user until the inputted function returns false
+
+askLoop() operates the same way as digitAskLoop except it does not ensure that 
+the provided result is a digit
+
+maxWidthDigitChecker() takes a result, an ask string, and a max number size. 
+It loops as long as the result is not a digit, or the length of the answer is not 
+equal to the max number size. When the loop breaks it returns the result.
+
+digitChecker() takes a result and a string, and loops as long as the result is 
+not a digit. The loop prompts the user with a string to reset the value of the 
+result. When the loop breaks the result is returned.
+
+blankSpaceLoop() takes a result and a string. It operates the same as digitChecker 
+except it checks to see if the result is composed entirely of spaces.
 
