@@ -155,7 +155,7 @@ def makePerson(OwnerType):
 			
 						
 			gender  = input("Enter the person's gender: ")
-			while gender not in ['m', 'f']
+			while gender not in ['m', 'f']:
 				gender = input("Please enter m or f: ")	
 			
 			birthday = input("Enter date of birth: ")	
