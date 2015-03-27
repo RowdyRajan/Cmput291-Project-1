@@ -138,6 +138,10 @@ def insertPerson(SIN, name, height, weight, eyecolor , haircolor,addr, gender, b
 	statement = "insert into people values ('%s' , '%s' , %s , %s , '%s' ,'%s', '%s', '%s', to_date('%s', 'yyyy/mm/dd'))" % (SIN,name,height,weight,eyecolor,haircolor,addr, gender,birthday)
 	return InsertData(statement)
 
+def insertTicket(ticket_no, violator_no, vehicle_no, office_no, vtype, vdate, place, description):
+	statement = "insert into people values ('%s' , '%s' , '%s' , '%s' , '%s' , to_date('%s', 'yyyy/mm/dd'), '%s', '%s' )" % (ticket_no, violator_no, vehicle_no, office_no, vtype, vdate, place, description)
+	return InsertData(statement)
+
 def dateChecker(answer):
     #checks if answer is a valid date
     #asks with askString untill valid date is given 
