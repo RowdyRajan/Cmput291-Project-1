@@ -11,6 +11,13 @@ def connect():
 	global connection
 	connection = cx_Oracle.connect(conString)
 
+def searchDB(query):
+	cursor = connection.cursor()
+	cursor.execute(query)
+	table = cursor.fetchall()
+	cursor.close()
+	return table
+
 def ReturnData(statement):
 	# helper function for getX
 	global connection

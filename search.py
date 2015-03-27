@@ -7,7 +7,7 @@
 #
 #Print vehicle history - #times been sold, average price, #violations it has 
 #based on VIN
-from helpers import ReturnData
+from helpers import searchDB
 def search():
 	print('1. Licence information')
 	print('2. Violation records')
@@ -21,7 +21,7 @@ def search():
 		else:
 			break
 	print("The value of choice is %s" %choice)
-	if (choice==1):
+	if (choice=='1'):
 		print('Press 1 to search by Licence number')
 		print('Press 2 to search by name')
 		while True:
@@ -31,69 +31,58 @@ def search():
 				continue
 			else:
 				break
-		if (choice == 1):
+		if (choice == '1'):
 			while True:
-				try:
-					li_num = int(input('Enter the number to be searched for'))
+				li_num = input('Enter the number to be searched for: ')
 				#test if valid number
-				except ValueError:
-					print('Input must be an integer.')
-					continue
-				if (li_num < 0):
-					print("Input must be positive.")
+				if(len(li_num)>15):
+					print('Licence numbers are 15 characters long')
 					continue
 				else:
 					break
-			statement = """SELECT p.name, l.licence_no, p.addr, p.birthday, 
-			l.class, c.c_id, c.description, l.expiring_date, p.sin
-			FROM people p, drive_licence l, driving_condition c, restriction r
-			WHERE (LEFT OUTER JOIN l ON p.sin = l.sin) AND (LEFT OUTER JOIN 
-			r ON l.licence_no = r.licence_no) AND (LEFT OUTER JOIN c ON 
-			r.r_id = c.c_id) AND l.licence_no = '%s'""" %(li_num)
-			ReturnData(statement)
+			statement = """select p.name, l.licence_no, p.addr, p.birthday, 
+			l.class, dc.description, l.expiring_date from people p, 
+			drive_licence l, driving_condition dc, restriction r where 
+			p.sin = l.sin and dc.c_id = r.r_id and l.licence_no = r.licence_no 
+			and (l.licence_no) = ('%s')""" %li_num
+			table = searchDB(statement)
+			printLicence(table)
 		else:
 			driver_name = input("Enter driver name: ")
-			statement = """SELECT p.name, l.licence_no, p.addr, p.birthday, 
-			l.class, c.c_id, c.description, l.expiring_date, p.sin	FROM 
-			people p, drive_licence l, driving_condition c, restriction r WHERE 
-			(LEFT OUTER JOIN l ON p.sin = l.sin) AND (LEFT OUTER JOIN r ON 
-			l.licence_no = r.licence_no) AND (LEFT OUTER JOIN c ON r.r_id 
-			= c.c_id) AND UPPER(p.name) = UPPER('%s')""" %(driver_name)
-			ReturnData(statement)
-	elif(choice==2):
+			statement = """select p.name, l.licence_no, p.addr, p.birthday, 
+			l.class, dc.description, l.expiring_date from people p, 
+			drive_licence l, driving_condition dc, restriction r where p.sin = 
+			l.sin and dc.c_id = r.r_id and l.licence_no = r.licence_no and 
+			UPPER(p.name) = UPPER('%s')""" %driver_name
+			table = searchDB(statement)
+			printLicence(table)
+	elif(choice=='2'):
 		print('Press 1 to search by Licence number')
 		print('Press 2 to search by SIN')
 		while True:
-			choice = input('Enter your choice (1-4): ')
+			choice = input('Enter your choice (1-2): ')
 			if( choice not in {'1', '2'}):
 				print('Invalid option. Start over.')
 				continue
 			else:
 				break
-		if (choice == 1):
+		if (choice == '1'):
 			while True:
-				try:
-					li_num = int(input('Enter the number to be searched for'))
-				#test if valid number
-				except ValueError:
-					print('Input must be an integer.')
-					continue
-				if (li_num < 0):
-					print("Input must be positive.")
+				li_num = input('Enter the number to be searched for: ')
+				if(len(li_num)>15):
+					print('Licence numbers are 15 characters long')
 					continue
 				else:
 					break
-			statement = """SELECT t.ticket_no, t.violator_no, t.vehicle_id, 
-				 t.office_no, t.vtype, t.vdate, t.place, t.descriptions, type.fine
-				 FROM ticket t, ticket_type type, drive_licence drive
-				 left outer join ticket_type type on type.vtype = t.vtype AND 
-				 left outer drive_licence drive on drive.sin = t.violator_no 
-				 AND drive.licence_no = '%s'""" %(li_num)
-			ReturnData(statement)
+			statement = """select t.ticket_no, t.vdate, t.vtype, 
+			t.descriptions from ticket t, drive_licence d where t.violator_no 
+			= d.sin AND d.licence_no = '%s'""" %li_num
+			table = searchDB(statement)
+			printLicence(table)
 		else:
 			while True:
 				try: 
-					SIN = int(input('Enter the SIN to be searched for'))
+					SIN = int(input('Enter the SIN to be searched for: '))
 				#test if valid number
 				except ValueError:
 					print('Input must be an integer.')
@@ -103,29 +92,77 @@ def search():
 					continue
 				else:
 					break
-				statement = """SELECT t.ticket_no, t.violator_no, t.vehicle_id, 
-				 t.office_no, t.vtype, t.vdate, t.place, t.descriptions, type.fine
-				 FROM ticket t, ticket_type type
-				 left outer join ticket_type type on type.vtype = t.vtype 
-				AND t.violator_no = '%s'""" %(SIN)
-				ReturnData(statement)
-	elif(choice==3):
+			statement = """select t.ticket_no, t.vdate, t.vtype, t.descriptions 
+			from ticket t, drive_licence d where t.violator_no = d.sin AND 
+			d.sin = '%s'""" %SIN
+			table = searchDB(statement)
+			printLicence(table)
+	elif(choice=='3'):
 		while True:
 			v_serial = input('Please enter the VIN to be searched for: ')
-			if (len(v_serial)!=15):
+			if (len(v_serial)>15):
 				print('VIN must be 15 characters long. Try again.')
 				continue
 			else:
 				break
-		statement = """SELECT v.serial_no AS Serial_No, COUNT(DISTINCT transaction_id) AS NumberOfSales, AVG(price) AS AveragePrice, COUNT(DISTINCT t.ticket_no) AS NumberOfTickets
-		  FROM vehicle v, auto_sale a, ticket t
-		  left outer join ticket t on t.vehicle_id = v.serial_no AND
-		  left outer join auto_sale a on a.vehicle_id = v.serial_no AND 
-		  UPPER(v.serial_no) = UPPER('%s')
-		  GROUP BY v.serial_no""" %(v_serial)
-		ReturnData(statement)
-	elif(choice==4):
+		statement = """select counts.c, avgs.a, viols.cnt from (select count(*) 
+		as c from auto_sale where vehicle_id = '%s')counts, 
+		(select SUM(price)/count(*) as a from auto_sale where vehicle_id = 
+		 '%s')avgs, (select count(*) as cnt from ticket where vehicle_id = 
+		'%s')viols""" % (v_serial, v_serial, v_serial)
+		table = searchDB(statement)
+		printVehicleHistory(table)
+	elif(choice=='4'):
 		return 0
 	else:
 		print("Something went horridly wrong!")
 		return 0
+
+def printLicence(table):
+	for e in table:
+		name = e[0].strip()
+		licence_no = e[1].strip()
+		addr = e[2].strip()
+		birthday = e[3]
+		Class = e[4].strip()
+		condition = e[5].strip()
+		expiry = e[6]
+
+		print("Name: %s" %name)
+		print("Licence Number: %s" % licence_no)
+		print("Address: %s" % addr)
+		print("Birthday: %s" % str(birthday.strftime('%Y-%m-%d')))
+		print("Driving Class: %s" % Class)
+		print("Driving Condition: %s" % condition)
+		print("Expiration Date: %s" % str(expiry.strftime('%Y-%m-%d')))
+
+	if (len(table) == 0):
+		print("Nothing found.")
+
+def printViolation(table):
+	for e in table:
+		ticketNumber = e[0]
+		vDate = e[1]
+		vType = e[2]
+		descriptions = e[3]
+
+		print("Ticket number: %d" % ticketNumber)
+		print("Violation date: %s" % str(vDate.strftime('%Y-%m-%d')))
+		print("Violation type: %s" % vType)
+		print("Descriptions: %s" % descriptions)
+
+	if (len(table) == 0):
+		print("Nothing found.")
+
+def printVehicleHistory(table):
+	for e in table:
+		totalSales = e[0]
+		averagePrice = e[1]
+		numberTickets = e[2]
+
+		print("Total Sales: %s" %totalSales)
+		print("Average Price: %s" % averagePrice)
+		print("Number of Tickets: %s" % numberTickets)
+
+	if len(table) == 0:
+		print("Nothing Found.")
