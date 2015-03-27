@@ -16,7 +16,7 @@ def main():
 		print('5. Search Engine')
 		print('6. Exit')
 		while True:
-			choice = input('Enter your choice (1-4): ')
+			choice = input('Enter your choice (1-6): ')
 			if choice not in {'1', '2', '3', '4', '5', '6'}:
 				print('Invalid option. Try again.')
 				continue
