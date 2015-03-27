@@ -71,11 +71,13 @@ Prompt for description
 		if yes, reprompt for description
 		if no, return to main menu
 
+After all inputs are finished, appropriate parameters are passed into the insertTicket() function.
+This function comes from helpers. It inserts the values into the people table via the 
+InsertData() helper function and an appropriately formatted query.
+
 Function tryAgain() prompts the user for a yes/no answer. If the user enters 
 yes, the function returns true. If the user enters no, the function returns 
 false. If the user enters invalid information, it asks them again.
-
-
 
 -----------------------------------------------------------------------------------------------------------------------
 Search Engine:
