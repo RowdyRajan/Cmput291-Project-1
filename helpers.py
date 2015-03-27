@@ -142,6 +142,11 @@ def typeIDExists(type_id):
 	statement = "select vt.type_id from vehicle_type vt where (vt.type_id) = %s" % (type_id)
 	return InDB(statement)
 
+def tranIDExists(tran_id):
+	#Checks to see if a vehicle type id exits 
+	statement = "select a.transaction_id from auto_sale a where (a.transaction_id) = %s" % (tran_id)
+	return InDB(statement)
+
 def insertVehicle(serial_no, maker, model, year,color,type_id):
 	statement = "INSERT into vehicle values ('%s' , '%s' , '%s' , %s , '%s' ,%s)" % (serial_no, maker, model, year,color,type_id)
 	return InsertData(statement)
@@ -182,3 +187,180 @@ def validDate(date):
         return False
 
     return True
+
+def digitAskLoop(answer,askString, confirmFunction):
+	"""
+	This function will take an answer and a confirm function
+	and will keep asking for input with the askString until 
+	confirmFunction returns true  based on the input and the
+	input is a digit.
+
+	returns: a valid answer based on the cofirmFunction
+	"""
+	while(not answer.isdigit() or confirmFunction(answer)):
+		if not answer.isdigit():
+			answer = input("Not a valid number. Please re-enter: ")
+		else:
+			answer = input(askString);
+	return answer;
+
+
+def digitNotInAskLoop(answer,askString, confirmFunction):
+	"""
+	This function will take an answer and a confirm function
+	and will keep asking for input with the askString until 
+	confirmFunction returns false based on the input
+
+	returns: a valid answer based on the cofirmFunction
+	"""
+	while(not answer.isdigit() or not confirmFunction(answer)):
+		if not answer.isdigit():
+			answer = input("Not a valid number. Please re-enter: ")
+		else:
+			answer = input(askString);
+	return answer;
+
+def askLoop(answer,askString,confirmFunction):
+	"""
+	This function will take an answer and a confirm function
+	and will keep asking for input with the askString until 
+	confirmFunction returns true based on the input or the
+	input is not blank
+
+	returns: a valid answer based on the cofirmFunction
+	"""
+	while confirmFunction(answer) or answer.isspace():
+		answer = input(askString)
+
+def maxWidthDigitChecker(answer, askString, maxNumberSize):
+	"""
+	This function will take an answer and a confirm function
+	and will keep asking for input with the askString until 
+	confirmFunction returns true based on the input and the
+	answer is a digit with a size less than maxNumberSize
+
+	returns: a valid answer based on the cofirmFunction
+	"""
+	while(not answer.isdigit()	or len(answer) != maxNumberSize):
+		answer = input(askString)
+	return answer
+ 
+def digitChecker(answer, askString):
+	#checkis if answetr is a digit and asks with
+	#askString until it is confirmed a digit
+	#returns a answer is a digit
+	while(not answer.isdigit()):
+		answer = input(askString)
+	return answer
+
+def floatChecker(answer, askString):
+	#checkis if answer is float and asks with
+	#askString until it is confirmed a digit
+	#returns a answer is a digit
+	while(not answer.isdigit()):
+		parts = answer.split('.')
+		if len(parts) == 2 and parts[0].isdigit() and parts[1].isdigit():
+			return answer
+		answer = input(askString)
+	return answer
+
+def blankSpaceLoop(answer, askString):
+	#checks to see if answer is blank and asks
+	#with ask string until the answer in not
+	#blank
+	while answer.isspace():
+		answer = input(askString)
+	return answer
+
+def yesOrNoChecker(askString):
+	#Checks if answer is yes or no
+	answer = input(askString)
+	while answer not in ['y', 'n']:
+		answer = input("Please enter y or n: ")
+
+	if answer == 'y':
+		return True 
+	return False 
+
+
+def makePerson(OwnerType, VID):
+	"""
+	Makes a person and adds them to the data base
+	Ownertype is the type of owner they are:
+	1 = primary owner
+	2= secondary owner
+	"""
+
+	ownerTypeMap = { 1 : ["primary owner", 'y'] , 2 : ["secondary owner", 'n']}
+
+	while True:
+		SIN = input("Enter the SIN of the new " + ownerTypeMap[OwnerType][0] + ' ');
+		SIN = digitChecker(SIN, "Not a valid SIN. Please enter again: ");
+		
+		if OwnerExists(SIN,VID):
+			print("Invalid Sin. Owner Exists")
+			continue
+		if not sinExists(SIN) or OwnerExists(SIN,VID) :
+			if not yesOrNoChecker("SIN does not exist. Would you like to make this SIN a person?[y or n]: "):	 
+				continue
+			
+			name = input("Enter the persons name: ")
+			name = blankSpaceLoop(name, "Blank Name. Please enter something: ")
+			
+						 				
+			height = input("Enter the person's height: ")
+			height = floatChecker(height, "Invalid number. Please enter again: ")
+
+			weight = input("Enter the person's weight: ")
+			weight = floatChecker(weight ,"Invalid number. Please enter again: ")
+			eyecolor  = input("Enter the person's eyecolor: ")
+			eyecolor = blankSpaceLoop(eyecolor ,"Blank entree. Please enter something: ")
+			haircolor  = input("Enter the person's haircolor: ")
+			haircolor = blankSpaceLoop(haircolor ,"Blank entree. Please enter something: ")
+
+
+			addr  = input("Enter the person's address: ")
+			addr = blankSpaceLoop(addr ,"Blank entree. Please enter something: ")
+			
+						
+			gender  = input("Enter the person's gender: ")
+			while gender not in ['m', 'f']:
+				gender = input("Please enter m or f: ")	
+			
+			birthday = input("Enter date of birth: ")	
+			birthday = dateChecker(birthday)
+			
+			insertPerson(SIN,name,height,weight,eyecolor,haircolor,addr,gender,birthday)
+		insertOwner(SIN, VID,ownerTypeMap[OwnerType][1])
+		break
+	return
+
+def makeSinglePerson(SIN):
+	#Asks for inputs for a person
+	name = input("Enter the persons name: ")
+	name = blankSpaceLoop(name, "Blank Name. Please enter something: ")
+			
+	height = input("Enter the person's height: ")
+	height = floatChecker(height, "Invalid number. Please enter again: ")
+
+	weight = input("Enter the person's weight: ")
+	weight = floatChecker(weight ,"Invalid number. Please enter again: ")
+	eyecolor  = input("Enter the person's eyecolor: ")
+	eyecolor = blankSpaceLoop(eyecolor ,"Blank entree. Please enter something: ")
+	haircolor  = input("Enter the person's haircolor: ")
+	haircolor = blankSpaceLoop(haircolor ,"Blank entree. Please enter something: ")
+
+
+	addr  = input("Enter the person's address: ")
+	addr = blankSpaceLoop(addr ,"Blank entree. Please enter something: ")
+			
+						
+	gender  = input("Enter the person's gender: ")
+	while gender not in ['m', 'f']:
+		gender = input("Please enter m or f: ")	
+			
+	birthday = input("Enter date of birth: ")	
+	birthday = dateChecker(birthday)
+			
+	insertPerson(SIN,name,height,weight,eyecolor,haircolor,addr,gender,birthday)
+
