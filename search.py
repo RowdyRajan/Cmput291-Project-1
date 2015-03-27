@@ -134,7 +134,7 @@ def printLicence(table):
 		print("Birthday: %s" % str(birthday.strftime('%Y-%m-%d')))
 		print("Driving Class: %s" % Class)
 		print("Driving Condition: %s" % condition)
-		print("Expiration Date: %s" % str(expiry.strftime('%Y-%m-%d')))
+		print("Expiration Date: %s\n" % str(expiry.strftime('%Y-%m-%d')))
 
 	if (len(table) == 0):
 		print("Nothing found.")
@@ -149,7 +149,7 @@ def printViolation(table):
 		print("Ticket number: %d" % ticketNumber)
 		print("Violation date: %s" % str(vDate.strftime('%Y-%m-%d')))
 		print("Violation type: %s" % vType)
-		print("Descriptions: %s" % descriptions)
+		print("Descriptions: %s\n" % descriptions)
 
 	if (len(table) == 0):
 		print("Nothing found.")
@@ -162,7 +162,7 @@ def printVehicleHistory(table):
 
 		print("Total Sales: %s" %totalSales)
 		print("Average Price: %s" % averagePrice)
-		print("Number of Tickets: %s" % numberTickets)
+		print("Number of Tickets: %s\n" % numberTickets)
 
 	if len(table) == 0:
 		print("Nothing Found.")
