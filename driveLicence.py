@@ -44,7 +44,7 @@ def getInfo():
 	licNo = None
 	SIN = None
 	licClass = None
-	photo = None
+	photo = None 
 	issuingDate = None
 	expireDate = None
 
@@ -72,8 +72,6 @@ def getInfo():
 				print("No record of person in Database,")
 				makeSinglePerson(SIN)
 				continue
-			else:
-				return None
 			
 
 		if(licClass == None):
@@ -84,10 +82,10 @@ def getInfo():
 					licClass = None
 					continue
 				else:
-					return None
+					pass
 			
 			
-		if(photo == None):
+		if(False):
 			global connection
 			photoPath = input("Local image file including path and extention: ")
 			#Load image into memory from local file 
@@ -108,9 +106,9 @@ def getInfo():
 			except:
 				print("oops")
 				return
-		connection.commit()
-		f_image.close()
-		cursor.close()
+		#connection.commit()
+		#f_image.close()
+		#cursor.close()
 								
 		if(issuingDate == None):
 			issuingDate = input("Issuing Date (eg. yyyy/mm/dd): ").strip()

@@ -37,10 +37,11 @@ def main():
 		elif (choice == '6'):
 			#leave program
 			global connection
+			#connection.commit()
 			exit()
 		else:
-			print('Something went wrong. Exiting.')
-			exit()
+			print('Something went wrong')
+
 
 if __name__ == '__main__':
 #prompt user to connect to database

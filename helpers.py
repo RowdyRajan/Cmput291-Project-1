@@ -44,6 +44,7 @@ def InDB(statement):
 	cursor.execute(statement)
 	rows = cursor.fetchall()
 	if len(rows) > 0:
+		print(rows)
 		cursor.close()
 		return True
 	cursor.close()
@@ -115,7 +116,7 @@ def insertTicket(ticket_no, violator_no, vehicle_no, office_no, vtype, vdate, pl
 	return InsertData(statement)
 
 def insertLicence(licNo, SIN, licClass, photo, issuingDate, expireDate):
-	statement = "INSERT into ticket values ('%s', '%s' , '%s' , to_date('%s', 'yyyy/mm/dd'), to_date('%s', 'yyyy/mm/dd'))" % (licNo, SIN, licClass, photo, issuingDate, expireDate)
+	statement = "INSERT INTO drive_licence(LICENCE_no, sin, class, issuing_date, expiring_date) values ('%s', '%s' , '%s', to_date('%s', 'yyyy/mm/dd'), to_date('%s', 'yyyy/mm/dd'))" % (licNo, SIN, licClass, issuingDate, expireDate)
 	InsertData(statement)
 	return
 
