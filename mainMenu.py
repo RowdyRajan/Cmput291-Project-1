@@ -2,7 +2,7 @@
 #Main menu - provides Five options to operate on the database
 from helpers import connect
 from newVehicleRegistration import registerVehicle
-#from autoTransactionFile import autoTransaction
+from autoTransaction import autoTransaction 
 #from licenceRegistrationFile import licenceRegistration
 from violationRecord import VR_Start
 from search import search
@@ -26,7 +26,7 @@ def main():
 			registerVehicle()
 		elif (choice == '2'):
 			pass
-			#autoTransaction()
+			autoTransaction()
 		elif (choice == '3'):
 			pass
 			#licenceRegistration
