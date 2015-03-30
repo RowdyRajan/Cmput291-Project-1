@@ -3,9 +3,9 @@ from helpers import *
 def autoTransaction():		
 	tran = input("Enter transaction Id: ")
 	tran = digitAskLoop(tran, "ID alreay exits. Please enter again", tranIDExists)
-	seller_id;
-	buyer_id;
-	v_id;
+	seller_id = None
+	buyer_id = None
+	v_id = None
 
 	while(True):
 		seller_id = input("Enter sellerID")
@@ -50,12 +50,12 @@ def autoTransaction():
 			break
 	
 	date = input("Enter sale date: ")	
-	date = dateChecker(date , "Invalid date. Please enter again: ")
+	date = dateChecker(date )
 	
 	sale = input("Enter amount of purchase: ")	
 	sale = floatChecker(sale, "Invalid amount. Please enter again: ")
 	
-	insertAutoSale(tran_id, seller_id, buyer_id,v_id, date, sale)
+	insertAutoSale(tran, seller_id, buyer_id,v_id, date, sale)
 	return  
 	
 	
