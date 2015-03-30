@@ -22,7 +22,7 @@ CREATE TABLE drive_licence (
 
 from helpers import *
 
-def License():
+def start_license():
 	print("Welcome to the driver's licence licensing agency. Here you can add a new drivers licence to the system")
 	while(1):
 		print("1: Enter New Licence")
@@ -34,7 +34,7 @@ def License():
 			continue
 
 		if(select == 1):
-			InsertData()
+			getInfo()
 		if(select == 2):
 			return
 
@@ -44,7 +44,7 @@ def getInfo():
 	licNo = None
 	SIN = None
 	licClass = None
-	photo = None
+	photo = None 
 	issuingDate = None
 	expireDate = None
 
@@ -69,12 +69,9 @@ def getInfo():
 		if(SIN == None):
 			SIN = input("SIN: ")
 			if( sinExists(SIN) == False):
-				print("No record of person in Database, please try again.")
-				if(tryAgain()):
-					SIN = None
-					continue
-				else:
-					return None
+				print("No record of person in Database,")
+				makeSinglePerson(SIN)
+				continue
 			
 
 		if(licClass == None):
@@ -85,32 +82,33 @@ def getInfo():
 					licClass = None
 					continue
 				else:
-					return None
+					pass
 			
 			
-		if(photo == None):
+		if(False):
+			global connection
 			photoPath = input("Local image file including path and extention: ")
 			#Load image into memory from local file 
 			#(Assumes a file by this name exists in the directory you are running from)
-			f_image  = open(photoPath,'rb')
+			try:
+				f_image  = open(photoPath,'rb')
+			except:
+				return
+			title = "Smile!"
+			place = "Wherever"
+			pid = licNo
 			image  = f_image.read()
-
+			cursor = connection.cursor()
 			cursor.setinputsizes(image=cx_Oracle.LONG_BINARY)
-
 			insert = "insert into pictures (photo_id, title, place, image) values (:photo_id, :title, :place, :image)"
-
-			cursor.execute(insert,{'photo_id':pid, 'title':title,'place':place, 'image':image})
-
-
-
-			statement = "SELECT v.photo FROM ticket_type v WHERE (v.photo) = ('%s')" % (photo)
-			if( InDB(statement) == False ):
-				print("Invalid violation type, please re-enter.")
-				if(tryAgain()):
-					photo = None
-					continue
-				else:
-					return None
+			try:
+				cursor.execute(insert,{'photo_id':pid, 'title':title,'place':place, 'image':image})
+			except:
+				print("oops")
+				return
+		#connection.commit()
+		#f_image.close()
+		#cursor.close()
 								
 		if(issuingDate == None):
 			issuingDate = input("Issuing Date (eg. yyyy/mm/dd): ").strip()
@@ -121,8 +119,6 @@ def getInfo():
 			expireDate = dateChecker(expireDate)
 
 		insertLicence(licNo, SIN, licClass, photo, issuingDate, expireDate)
-
-		print("Would you like to enter a restriction?:")
 
 
 		return

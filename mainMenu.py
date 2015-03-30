@@ -3,7 +3,7 @@
 from helpers import connect
 from newVehicleRegistration import registerVehicle
 from autoTransaction import autoTransaction 
-#from licenceRegistrationFile import licenceRegistration
+from driveLicence import start_license
 from violationRecord import VR_Start
 from search import search
 
@@ -28,7 +28,7 @@ def main():
 			pass
 			autoTransaction()
 		elif (choice == '3'):
-			pass
+			start_license()
 			#licenceRegistration
 		elif (choice == '4'):
 			VR_Start()
@@ -36,10 +36,12 @@ def main():
 			search()
 		elif (choice == '6'):
 			#leave program
-			return 0
+			global connection
+			#connection.commit()
+			exit()
 		else:
-			print('Something went wrong. Exiting.')
-			return 1
+			print('Something went wrong')
+
 
 if __name__ == '__main__':
 #prompt user to connect to database
