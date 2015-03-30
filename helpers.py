@@ -120,6 +120,10 @@ def insertLicence(licNo, SIN, licClass, photo, issuingDate, expireDate):
 	InsertData(statement)
 	return
 
+def insertAutoSale(t,s,b,v,d,p):
+	statement = "insert into auto_sale values ('%s','%s','%s','%s', to_date('%s', 'yyyy/mm/dd'), %s )" % (t,s,b,v,d,p)
+	return InsertData(statement)
+	
 def dateChecker(answer):
     #checks if answer is a valid date
     #asks with askString untill valid date is given 
