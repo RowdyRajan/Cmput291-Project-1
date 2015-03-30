@@ -162,9 +162,11 @@ def insertTicket(ticket_no, violator_no, vehicle_no, office_no, vtype, vdate, pl
 	statement = "INSERT into ticket values (%d , '%s' , '%s' , '%s' , '%s' , to_date('%s', 'yyyy/mm/dd'), '%s', '%s' )" % (ticket_no, violator_no, vehicle_no, office_no, vtype, vdate, place, description)
 	return InsertData(statement)
 
-def insertLicence(licNo, SIN, licClass, photo, issuingDate, expireDate):
-	statement = "INSERT into ticket values ('%s', '%s' , '%s' , to_date('%s', 'yyyy/mm/dd'), to_date('%s', 'yyyy/mm/dd'))" %
+#def insertLicence(licNo, SIN, licClass, photo, issuingDate, expireDate):
+#	statement = "INSERT into ticket values ('%s', '%s' , '%s' , to_date('%s', 'yyyy/mm/dd'), to_date('%s', 'yyyy/mm/dd'))" %
 
+def insert auto_sale( ):
+	statement = "insert into auot_sale values ('%s','%s','%s',to_date('%s', 'yyyy/mm/dd'), %s )" % (s,b,)
 def dateChecker(answer):
     #checks if answer is a valid date
     #asks with askString untill valid date is given 
