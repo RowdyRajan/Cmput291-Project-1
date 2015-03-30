@@ -34,7 +34,7 @@ def start_license():
 			continue
 
 		if(select == 1):
-			InsertData()
+			getInfo()
 		if(select == 2):
 			return
 
@@ -69,12 +69,11 @@ def getInfo():
 		if(SIN == None):
 			SIN = input("SIN: ")
 			if( sinExists(SIN) == False):
-				print("No record of person in Database, please try again.")
-				if(tryAgain()):
-					SIN = None
-					continue
-				else:
-					return None
+				print("No record of person in Database,")
+				makeSinglePerson(SIN)
+				continue
+			else:
+				return None
 			
 
 		if(licClass == None):
@@ -93,7 +92,10 @@ def getInfo():
 			photoPath = input("Local image file including path and extention: ")
 			#Load image into memory from local file 
 			#(Assumes a file by this name exists in the directory you are running from)
-			f_image  = open(photoPath,'rb')
+			try:
+				f_image  = open(photoPath,'rb')
+			except:
+				return
 			title = "Smile!"
 			place = "Wherever"
 			pid = licNo
@@ -101,10 +103,14 @@ def getInfo():
 			cursor = connection.cursor()
 			cursor.setinputsizes(image=cx_Oracle.LONG_BINARY)
 			insert = "insert into pictures (photo_id, title, place, image) values (:photo_id, :title, :place, :image)"
-			cursor.execute(insert,{'photo_id':pid, 'title':title,'place':place, 'image':image})
-			connection.commit()
-			f_image.close()
-			cursor.close()
+			try:
+				cursor.execute(insert,{'photo_id':pid, 'title':title,'place':place, 'image':image})
+			except:
+				print("oops")
+				return
+		connection.commit()
+		f_image.close()
+		cursor.close()
 								
 		if(issuingDate == None):
 			issuingDate = input("Issuing Date (eg. yyyy/mm/dd): ").strip()
@@ -115,8 +121,6 @@ def getInfo():
 			expireDate = dateChecker(expireDate)
 
 		insertLicence(licNo, SIN, licClass, photo, issuingDate, expireDate)
-
-		print("Would you like to enter a restriction?:")
 
 
 		return

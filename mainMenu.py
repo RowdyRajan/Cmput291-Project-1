@@ -37,7 +37,6 @@ def main():
 		elif (choice == '6'):
 			#leave program
 			global connection
-			connection.close()
 			exit()
 		else:
 			print('Something went wrong. Exiting.')
