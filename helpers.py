@@ -47,6 +47,7 @@ def InDB(statement):
 		print(rows)
 		cursor.close()
 		return True
+	connection.commit()
 	cursor.close()
 	return False
 
