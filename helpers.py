@@ -22,9 +22,10 @@ def searchDB(query):
 	return table
 
 def deleteOwner(VIN):
-	query = "DELETE FROM owner WHERE vehicle_id = '%s'"%VIN
+	query = "DELETE FROM owner WHERE vehicle_id = '%s'" % VIN
 	cursor = connection.cursor()
 	cursor.execute(query)
+	connection.commit()
 	cursor.close()
 
 
@@ -44,10 +45,9 @@ def InDB(statement):
 	cursor.execute(statement)
 	rows = cursor.fetchall()
 	if len(rows) > 0:
-		print(rows)
 		cursor.close()
 		return True
-	connection.commit()
+	#connection.commit()
 	cursor.close()
 	return False
 
@@ -57,8 +57,8 @@ def InsertData(statement):
 	global connection
 	cursor = connection.cursor()
 	cursor.execute(statement)
+	connection.commit()
 	cursor.close()
-	#connection.commit()
 	return
 
 def getName(SIN):
@@ -111,6 +111,7 @@ def insertPerson(SIN, name, height, weight, eyecolor , haircolor, addr, gender, 
 
 def insertOwner(owner_id, vehicle_id, is_primary_owner):
 	statement = "insert into owner values ('%s' , '%s' , '%s')" % (owner_id,vehicle_id, is_primary_owner)
+	return InsertData(statement)
 
 def insertTicket(ticket_no, violator_no, vehicle_no, office_no, vtype, vdate, place, description):
 	statement = "INSERT into ticket values (%d , '%s' , '%s' , '%s' , '%s' , to_date('%s', 'yyyy/mm/dd'), '%s', '%s' )" % (ticket_no, violator_no, vehicle_no, office_no, vtype, vdate, place, description)
@@ -121,6 +122,10 @@ def insertLicence(licNo, SIN, licClass, photo, issuingDate, expireDate):
 	InsertData(statement)
 	return
 
+def insertAutoSale(t,s,b,v,d,p):
+	statement = "insert into auto_sale values ('%s','%s','%s','%s', to_date('%s', 'yyyy/mm/dd'), %s )" % (t,s,b,v,d,p)
+	return InsertData(statement)
+	
 def dateChecker(answer):
     #checks if answer is a valid date
     #asks with askString untill valid date is given 
@@ -251,7 +256,7 @@ def makePerson(OwnerType, VID):
 
 	while True:
 		SIN = input("Enter the SIN of the new " + ownerTypeMap[OwnerType][0] + ' ');
-		SIN = digitChecker(SIN, "Not a valid SIN. Please enter again: ");
+		SIN = blankSpaceLoop(SIN, "Not a valid SIN. Please enter again: ");
 		
 		if OwnerExists(SIN,VID):
 			print("Invalid Sin. Owner Exists")
@@ -320,3 +325,11 @@ def makeSinglePerson(SIN):
 			
 	insertPerson(SIN,name,height,weight,eyecolor,haircolor,addr,gender,birthday)
 
+def isOwnerChecker(v_id, s_id, askString):
+	while True:
+		statement = "select o.owner_id from owner o where o.owner_id = %s and o.vehicle_id = %s" % (s_id, v_id)
+		if(InDB(statement)):
+			return v_id
+		else:
+			v_id = input(askString)
+	
