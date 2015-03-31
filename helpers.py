@@ -91,6 +91,10 @@ def licenceExists(l_no):
 	statement = "select l.licence_no from drive_licence l where (l.licence_no) = ('%s')" % (l_no)
 	return InDB(statement)
 
+def hasLicence(s_id):
+	statement = "select l.licence_no from drive_licence l where (l.sin) = ('%s')" % (s_id)
+	return InDB(statement)
+
 def typeIDExists(type_id):
 	#Checks to see if a vehicle type id exits 
 	statement = "select vt.type_id from vehicle_type vt where (vt.type_id) = %s" % (type_id)
@@ -192,6 +196,8 @@ def askLoop(answer,askString,confirmFunction):
 	"""
 	while confirmFunction(answer) or answer.isspace():
 		answer = input(askString)
+
+	return answer
 
 def maxWidthDigitChecker(answer, askString, maxNumberSize):
 	"""

@@ -67,13 +67,14 @@ def getInfo():
 					return None
 			
 		if(SIN == None):
+		
 			SIN = input("SIN: ")
+			SIN = askLoop(SIN, "Person already has a licence. Please try again: ", hasLicence)
 			if( sinExists(SIN) == False):
 				print("No record of person in Database,")
 				makeSinglePerson(SIN)
 				continue
-			
-
+		
 		if(licClass == None):
 			licClass = input("Licence Class: ")
 			if(len(licNo)>10):
